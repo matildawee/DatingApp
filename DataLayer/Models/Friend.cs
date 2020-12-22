@@ -10,12 +10,12 @@ namespace DataLayer.Models
     {
         [Key]
         [ForeignKey("FirstPerson")]
-        public int FirstUserId { get; set; }
+        public int FirstPersonId { get; set; }
         public Person FirstPerson { get; set; }
 
         
         [ForeignKey("SecondPerson")]
-        public int SecondUserId { get; set; }
+        public int SecondPersonId { get; set; }
         public Person SecondPerson { get; set; }
     }
 }
