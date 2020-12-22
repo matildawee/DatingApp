@@ -19,7 +19,7 @@ namespace DatingApp.Data
                 return;   // DB has been seeded
             }
 
-            var users = new Person[]
+            var persons = new Person[]
             {
                 new Person { FirstName = "Carson",   LastName = "Alexander",
                     Description = "hej" },
@@ -31,7 +31,7 @@ namespace DatingApp.Data
                     Description = "hej4" }
             };
 
-            foreach (Person p in users)
+            foreach (Person p in persons)
             {
                 context.Persons.Add(p);
             }

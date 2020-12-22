@@ -19,24 +19,36 @@ namespace DataLayer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Friend>().ToTable("Friends");
-            modelBuilder.Entity<FriendRequest>().ToTable("FriendRequests");
-            modelBuilder.Entity<Post>().ToTable("Posts");
-            modelBuilder.Entity<Person>().ToTable("Users");
+            modelBuilder.Entity<Friend>().ToTable("Friend");
+            modelBuilder.Entity<FriendRequest>().ToTable("FriendRequest");
+            modelBuilder.Entity<Post>().ToTable("Post");
+            modelBuilder.Entity<Person>().ToTable("Person");
 
             modelBuilder.Entity<FriendRequest>()
                .HasOne(d => d.Sender)
+               .WithMany()
+               .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<FriendRequest>()
+               .HasOne(d => d.Recevier)
                .WithMany()
                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Friend>()
                .HasOne(d => d.FirstPerson)
                .WithMany()
                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Friend>()
+               .HasOne(d => d.SecondPerson)
+               .WithMany()
+               .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Post>()
                .HasOne(d => d.Author)
                .WithMany()
                .OnDelete(DeleteBehavior.Restrict);
-                
+            modelBuilder.Entity<Post>()
+               .HasOne(d => d.Person)
+               .WithMany()
+               .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 
