@@ -2,16 +2,17 @@
 
 namespace DataLayer.Migrations
 {
-    public partial class update : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "Person",
                 columns: table => new
                 {
                     PersonId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
@@ -19,11 +20,35 @@ namespace DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.PersonId);
+                    table.PrimaryKey("PK_Person", x => x.PersonId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "FriendRequests",
+                name: "Friend",
+                columns: table => new
+                {
+                    FirstPersonId = table.Column<int>(type: "int", nullable: false),
+                    SecondPersonId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Friend", x => x.FirstPersonId);
+                    table.ForeignKey(
+                        name: "FK_Friend_Person_FirstPersonId",
+                        column: x => x.FirstPersonId,
+                        principalTable: "Person",
+                        principalColumn: "PersonId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Friend_Person_SecondPersonId",
+                        column: x => x.SecondPersonId,
+                        principalTable: "Person",
+                        principalColumn: "PersonId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FriendRequest",
                 columns: table => new
                 {
                     FriendRequestId = table.Column<int>(type: "int", nullable: false)
@@ -34,47 +59,23 @@ namespace DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FriendRequests", x => x.FriendRequestId);
+                    table.PrimaryKey("PK_FriendRequest", x => x.FriendRequestId);
                     table.ForeignKey(
-                        name: "FK_FriendRequests_Users_RecevierPersonId",
+                        name: "FK_FriendRequest_Person_RecevierPersonId",
                         column: x => x.RecevierPersonId,
-                        principalTable: "Users",
+                        principalTable: "Person",
                         principalColumn: "PersonId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_FriendRequests_Users_SenderId",
+                        name: "FK_FriendRequest_Person_SenderId",
                         column: x => x.SenderId,
-                        principalTable: "Users",
+                        principalTable: "Person",
                         principalColumn: "PersonId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Friends",
-                columns: table => new
-                {
-                    FirstUserId = table.Column<int>(type: "int", nullable: false),
-                    SecondUserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Friends", x => x.FirstUserId);
-                    table.ForeignKey(
-                        name: "FK_Friends_Users_FirstUserId",
-                        column: x => x.FirstUserId,
-                        principalTable: "Users",
-                        principalColumn: "PersonId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Friends_Users_SecondUserId",
-                        column: x => x.SecondUserId,
-                        principalTable: "Users",
-                        principalColumn: "PersonId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Posts",
+                name: "Post",
                 columns: table => new
                 {
                     PostId = table.Column<int>(type: "int", nullable: false)
@@ -85,60 +86,60 @@ namespace DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Posts", x => x.PostId);
+                    table.PrimaryKey("PK_Post", x => x.PostId);
                     table.ForeignKey(
-                        name: "FK_Posts_Users_AuthorId",
+                        name: "FK_Post_Person_AuthorId",
                         column: x => x.AuthorId,
-                        principalTable: "Users",
+                        principalTable: "Person",
                         principalColumn: "PersonId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Posts_Users_PersonId",
+                        name: "FK_Post_Person_PersonId",
                         column: x => x.PersonId,
-                        principalTable: "Users",
+                        principalTable: "Person",
                         principalColumn: "PersonId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_FriendRequests_RecevierPersonId",
-                table: "FriendRequests",
+                name: "IX_Friend_SecondPersonId",
+                table: "Friend",
+                column: "SecondPersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FriendRequest_RecevierPersonId",
+                table: "FriendRequest",
                 column: "RecevierPersonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FriendRequests_SenderId",
-                table: "FriendRequests",
+                name: "IX_FriendRequest_SenderId",
+                table: "FriendRequest",
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friends_SecondUserId",
-                table: "Friends",
-                column: "SecondUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Posts_AuthorId",
-                table: "Posts",
+                name: "IX_Post_AuthorId",
+                table: "Post",
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_PersonId",
-                table: "Posts",
+                name: "IX_Post_PersonId",
+                table: "Post",
                 column: "PersonId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "FriendRequests");
+                name: "Friend");
 
             migrationBuilder.DropTable(
-                name: "Friends");
+                name: "FriendRequest");
 
             migrationBuilder.DropTable(
-                name: "Posts");
+                name: "Post");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Person");
         }
     }
 }

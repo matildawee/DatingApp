@@ -21,13 +21,13 @@ namespace DatingApp.Data
 
             var persons = new Person[]
             {
-                new Person { FirstName = "Carson",   LastName = "Alexander",
+                new Person {Email = "hej@hej.se", FirstName = "Matilda",   LastName = "Alexander",
                     Description = "hej" },
-                new Person { FirstName = "Meredith", LastName = "Alonso",
+                new Person {Email = "oskar@hej.se", FirstName = "Oskar", LastName = "Alonso",
                     Description = "hej2" },
-                new Person { FirstName = "Arturo",   LastName = "Anand",
+                new Person {Email = "jennifer@hej.se", FirstName = "Jennifer",   LastName = "Anand",
                     Description = "hej3" },
-                new Person { FirstName = "Gytis",    LastName = "Barzdukas",
+                new Person {Email = "ptheven@hej.se", FirstName = "Phteven",    LastName = "Barzdukas",
                     Description = "hej4" }
             };
 
