@@ -1,5 +1,7 @@
-﻿using DatingApp.Models;
+﻿using DataLayer;
+using DatingApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -13,20 +15,23 @@ namespace DatingApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly DatingAppContext _context;
+
+        public HomeController(DatingAppContext context, ILogger<HomeController> logger)
         {
+            _context = context;
             _logger = logger;
         }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         public IActionResult Privacy()
         {
             return View();
         }
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.Persons.ToListAsync());
+        }
+
+        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -32,5 +32,9 @@ namespace DatingApp.Controllers
 
             return View(user);
         }
+        public IActionResult Post()
+        {
+            return View();
+        }
     }
 }
