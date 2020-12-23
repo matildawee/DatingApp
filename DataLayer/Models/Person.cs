@@ -8,8 +8,10 @@ namespace DataLayer.Models
 {
     public class Person
     {
-        //[Key]
+        [Key]
         public int PersonId { get; set; }
+        [DisallowNull]
+        public string Email { get; set; }
 
         [DisallowNull]
         [Required(ErrorMessage = "Fyll i namn!")]

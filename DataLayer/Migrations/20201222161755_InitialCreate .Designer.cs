@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(DatingAppContext))]
-    [Migration("20201222104238_update")]
-    partial class update
+    [Migration("20201222161755_InitialCreate ")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,17 +23,17 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DataLayer.Models.Friend", b =>
                 {
-                    b.Property<int>("FirstUserId")
+                    b.Property<int>("FirstPersonId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SecondUserId")
+                    b.Property<int>("SecondPersonId")
                         .HasColumnType("int");
 
-                    b.HasKey("FirstUserId");
+                    b.HasKey("FirstPersonId");
 
-                    b.HasIndex("SecondUserId");
+                    b.HasIndex("SecondPersonId");
 
-                    b.ToTable("Friends");
+                    b.ToTable("Friend");
                 });
 
             modelBuilder.Entity("DataLayer.Models.FriendRequest", b =>
@@ -58,7 +58,7 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("FriendRequests");
+                    b.ToTable("FriendRequest");
                 });
 
             modelBuilder.Entity("DataLayer.Models.Person", b =>
@@ -72,6 +72,9 @@ namespace DataLayer.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -84,7 +87,7 @@ namespace DataLayer.Migrations
 
                     b.HasKey("PersonId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Person");
                 });
 
             modelBuilder.Entity("DataLayer.Models.Post", b =>
@@ -110,21 +113,21 @@ namespace DataLayer.Migrations
 
                     b.HasIndex("PersonId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Post");
                 });
 
             modelBuilder.Entity("DataLayer.Models.Friend", b =>
                 {
                     b.HasOne("DataLayer.Models.Person", "FirstPerson")
                         .WithMany()
-                        .HasForeignKey("FirstUserId")
+                        .HasForeignKey("FirstPersonId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DataLayer.Models.Person", "SecondPerson")
                         .WithMany()
-                        .HasForeignKey("SecondUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("SecondPersonId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("FirstPerson");
@@ -136,7 +139,8 @@ namespace DataLayer.Migrations
                 {
                     b.HasOne("DataLayer.Models.Person", "Recevier")
                         .WithMany()
-                        .HasForeignKey("RecevierPersonId");
+                        .HasForeignKey("RecevierPersonId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("DataLayer.Models.Person", "Sender")
                         .WithMany()
@@ -160,7 +164,7 @@ namespace DataLayer.Migrations
                     b.HasOne("DataLayer.Models.Person", "Person")
                         .WithMany()
                         .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Author");
