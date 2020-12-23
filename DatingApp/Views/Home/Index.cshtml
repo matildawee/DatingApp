@@ -6,61 +6,88 @@
     ViewData["Title"] = "Home Page";
 }
 
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+
+</div>
 
 
-@if (SignInManager.IsSignedIn(User))
-{
-    <div class="text-center">
-        <h1 class="display-4">Welcome</h1>
-        
-    </div>
+@*<center>
+        <div class="row">
+            @foreach (var item in Model) {
+                <div class="col-md-4">
+                   <div class="card" style="width:200px">
+                      <a href=@Url.Action("Index", "Person", new { id = item.PersonId })>
+                        <img class="card-img-top" width="200" height="200" src="@Url.Action("RenderProfileImage", "Person", new { userId = item.PersonId })" alt="Image Card" style="border-radius: 5px" />
+                      </a>
+                       <div class="card-body">
+                           <a href="@Url.Action("Index", "Person", new { id = item.PersonId })">
+                               <h4 class="card-title">@item.FirstName @item.LastName</h4>
+                           </a>
+                           <p class="card-text">@item.Description</p>
+                           @Html.ActionLink(linkText: "View Profile", actionName: "Index", controllerName: "Person", routeValues: new { id = item.PersonId }, htmlAttributes: new { @class = "" })
+                       </div>
+                   </div>
+                    </div>}
+        </div>
+    </center>*@
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.FirstName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.LastName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+
+
+
+@*@if (SignInManager.IsSignedIn(User))
+    {
+        <div class="text-center">
+            <h1 class="display-4">Welcome</h1>
+
+        </div>
+
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FirstName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LastName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        <!--<a asp-action="Details" asp-route-id="@item.PersonId">Details</a>-->
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LastName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+    <a asp-action="Details" asp-route-id="@item.PersonId">Details</a>
+    </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
 
 
 
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    }*@

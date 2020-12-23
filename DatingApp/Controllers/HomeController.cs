@@ -1,4 +1,6 @@
 ﻿using DataLayer;
+using DataLayer.Models;
+using DataLayer.Repositories;
 using DatingApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,20 +19,54 @@ namespace DatingApp.Controllers
 
         private readonly DatingAppContext _context;
 
+        private Random random;
+
+        private PersonRepository personRepository;
+
         public HomeController(DatingAppContext context, ILogger<HomeController> logger)
         {
             _context = context;
             _logger = logger;
+            random = new Random();
+            personRepository = new PersonRepository(context);
         }
         public IActionResult Privacy()
         {
             return View();
         }
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Persons.ToListAsync());
-        }
+        //public async Task<IActionResult> Index()
+        //{
+        //   return View(await _context.Persons.ToListAsync());
+        //}
 
+        public ActionResult Index()
+        {
+            List<Person> profiles = new List<Person>();
+            if (User.Identity.IsAuthenticated)
+            {
+                profiles = personRepository.GetAllProfilesExceptCurrent(User.Identity.Name);
+            }
+            else
+            {
+                profiles = personRepository.GetAllPersons();
+            }
+
+            List<Person> randomProfiles = new List<Person>();
+            for (int i = 0; i < 3; i++)
+            {
+                var profile = profiles[random.Next(profiles.Count)];
+                if (!randomProfiles.Exists((x) => x == profile))
+                {
+                    randomProfiles.Add(profile);
+                }
+                else
+                {
+                    i--;
+                }
+            }
+
+            return View(randomProfiles);
+        }
         
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

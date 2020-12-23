@@ -1,0 +1,23 @@
+﻿using DataLayer.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace DataLayer.Repositories
+{
+    public class PersonRepository : Repository<Person>
+    {
+        public PersonRepository(DatingAppContext context) : base(context) { }
+
+        public List<Person> GetAllPersons()
+        {
+            return items.ToList();
+        }
+
+        public List<Person> GetAllProfilesExceptCurrent(string mail)
+        {
+            return items.Where((p) => !p.Email.Equals(mail)).ToList();
+        }
+    }
+}
