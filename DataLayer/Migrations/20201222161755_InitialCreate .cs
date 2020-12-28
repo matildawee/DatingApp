@@ -28,11 +28,13 @@ namespace DataLayer.Migrations
                 columns: table => new
                 {
                     FirstPersonId = table.Column<int>(type: "int", nullable: false),
-                    SecondPersonId = table.Column<int>(type: "int", nullable: false)
+                    SecondPersonId = table.Column<int>(type: "int", nullable: false),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Friend", x => x.FirstPersonId);
+                    table.PrimaryKey("PK_Friend2", x => x.SecondPersonId);
                     table.ForeignKey(
                         name: "FK_Friend_Person_FirstPersonId",
                         column: x => x.FirstPersonId,
