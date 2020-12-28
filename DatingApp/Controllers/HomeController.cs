@@ -2,6 +2,7 @@
 using DataLayer.Models;
 using DataLayer.Repositories;
 using DatingApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -39,6 +40,7 @@ namespace DatingApp.Controllers
         //   return View(await _context.Persons.ToListAsync());
         //}
 
+        [AllowAnonymous]
         public ActionResult Index()
         {
             List<Person> profiles = new List<Person>();
@@ -64,10 +66,9 @@ namespace DatingApp.Controllers
                     i--;
                 }
             }
-
             return View(randomProfiles);
         }
-        
+       
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
