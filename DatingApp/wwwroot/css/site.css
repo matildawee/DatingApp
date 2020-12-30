@@ -69,3 +69,39 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+div.exempel {
+    float: left;
+    margin-left: 10%;
+}
+
+#nameLink a {
+    color: black;
+}
+
+/* enable absolute positioning */
+.search-button {
+    position: relative;
+    margin-bottom: 3%;
+}
+
+/* style icon and align icon*/
+.search-button .fas {
+    position: absolute;
+    padding: 10px;
+    pointer-events: none;
+    left: 0px;
+    color: gray;
+}
+
+/* add padding  */
+.search-button input {
+    padding-left: 30px;
+}
+
+/*Style sad-face icon*/
+.fa-frown {
+    position: absolute;
+    top: 32.5%;
+    left: 27%;
+}
