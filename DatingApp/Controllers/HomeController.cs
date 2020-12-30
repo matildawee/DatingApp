@@ -35,6 +35,7 @@ namespace DatingApp.Controllers
         {
             return View();
         }
+
         //public async Task<IActionResult> Index()
         //{
         //   return View(await _context.Persons.ToListAsync());

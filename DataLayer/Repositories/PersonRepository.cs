@@ -19,5 +19,10 @@ namespace DataLayer.Repositories
         {
             return items.Where((p) => !p.Email.Equals(mail)).ToList();
         }
+
+        public List<Person> SearchResultByName(string name)
+        {
+            return items.Where((p) => p.FirstName.Contains(name) || p.LastName.Contains(name)).ToList();
+        }
     }
 }
