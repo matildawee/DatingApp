@@ -13,9 +13,6 @@ namespace DatingApp.Controllers
     {
         private readonly DatingAppContext _context;
 
-        [TempData]
-        public string StatusMessage { get; set; }
-
         public PersonController(DatingAppContext context)
         {
             _context = context;
@@ -58,6 +55,7 @@ namespace DatingApp.Controllers
                     throw;
                 }
             }
+            TempData["Success"] = "Profile was updated successfully.";
             return View("Profile");
         }
     }
