@@ -16,6 +16,8 @@
         <h4>@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h4>
 
         <form asp-action="Edit">
+            <img src=@Html.DisplayFor(model => model.Picture) />
+
             <div class="form-group">
                 <label for="input-FirstName">First name</label>
                 <input class="form-control" type="text" id="FirstName" name="FirstName" value=@Html.DisplayFor(model => model.FirstName)>
@@ -32,19 +34,19 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
 
-            <!--<button id="update-profile-button" class="btn btn-primary" type="submit">Save</button>-->
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="button" value="Save" class="btn btn-primary" onclick="location.href='@Url.Action("UpdateProfile", "Person")'" />
             </div>
+
         </form>
 
-            <div class="alert alert-success alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                Your profile has been updated
-            </div>
-            <ul class="nav">
-                <li class="nav-item"><a class="nav-link" id="email" href="/Identity/Account/Manage/Email">Manage your account</a></li>
-            </ul>
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            Your profile has been updated
+        </div>
+        <ul class="nav">
+            <li class="nav-item"><a class="nav-link" id="email" href="/Identity/Account/Manage/Email">Manage your account</a></li>
+        </ul>
     </div>
 
 }

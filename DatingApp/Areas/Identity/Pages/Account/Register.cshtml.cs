@@ -44,7 +44,7 @@ namespace DatingApp.Areas.Identity.Pages.Account
 
         [BindProperty]
         public InputModel Input { get; set; }
-
+        public InputModelDetails Input2 { get; set; }
         public string ReturnUrl { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
@@ -67,6 +67,16 @@ namespace DatingApp.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
         }
+        public class InputModelDetails
+        {
+            [Required]
+            [Display(Name = "First name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Last name")]
+            public string LastName { get; set; }
+        }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -82,10 +92,18 @@ namespace DatingApp.Areas.Identity.Pages.Account
             {
                 var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                
                 if (result.Succeeded)
                 {
-                    var person =  new Person {Email = Input.Email, FirstName = "", 
-                        LastName = "", Description = "" 
+                    string firstname = Request.Form["firstName"];
+                    string lastname = Request.Form["lastName"];
+                    var person = new Person
+                    {
+                        Email = Input.Email,
+                        FirstName = firstname,
+                        LastName = lastname,
+                        Description = "",
+                        Picture = "~/img/default_profile_picture.jfif"
                     };
                     _context.Persons.Add(person);
                     _context.SaveChanges();
