@@ -61,9 +61,7 @@ namespace DatingApp.Controllers
             {
                 try
                 {
-                    
-                    await _context.SaveChangesAsync();
-                    
+                    await _context.SaveChangesAsync();   
                 }
                 catch (DbUpdateException /* ex */)
                 {
@@ -74,6 +72,37 @@ namespace DatingApp.Controllers
                 }
             }
             return View("Profile", personToUpdate);
+        }
+
+        
+
+        public async Task<IActionResult> Edit([Bind("PersonId,Email,FirstName,LastName,Description")] Person person)
+        {
+            //var user = await _context.Persons
+              // .FirstOrDefaultAsync(m => m.Email == User.Identity.Name);
+            //var id = user.PersonId;
+
+            if (person.PersonId == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(person);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+
+                    throw;
+
+                }
+                
+            }
+            return View("Profile");
         }
     }
 }
