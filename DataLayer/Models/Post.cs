@@ -10,8 +10,9 @@ namespace DataLayer.Models
         [Key]
         public int PostId { get; set; }
 
-        
-        public DateTime Timestamp { get; }
+        //DateTime localDate = DateTime.Now;
+        //public DateTime Timestamp = DateTime.Now;
+        public DateTime Timestam { get; set; }
         public int PersonId { get; set; }
         public Person Person { get; set; }
         public int AuthorId { get; set; }

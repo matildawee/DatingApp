@@ -36,6 +36,17 @@ namespace DatingApp.Data
                 context.Persons.Add(p);
             }
             context.SaveChanges();
+
+            var posts = new Post[]
+            {
+                new Post {PersonId = 1, AuthorId = 2,
+                    PostText = "hej", Timestam = DateTime.Now}
+            };
+            foreach (Post p in posts)
+            {
+                context.Posts.Add(p);
+            }
+            context.SaveChanges();
         }
     }
 }

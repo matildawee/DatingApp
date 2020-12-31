@@ -32,22 +32,38 @@ namespace DataLayer
                .HasOne(d => d.Recevier)
                .WithMany()
                .OnDelete(DeleteBehavior.Restrict);
+
+            //modelBuilder.Entity<Friend>()
+            //   .HasOne(d => d.FirstPerson)
+            //   .WithMany()
+            //   .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Friend>()
+            //   .HasOne(d => d.SecondPerson)
+            //   .WithMany()
+            //   .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Friend>()
-               .HasOne(d => d.FirstPerson)
-               .WithMany()
-               .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Friend>()
-               .HasOne(d => d.SecondPerson)
-               .WithMany()
-               .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Post>()
-               .HasOne(d => d.Author)
-               .WithMany()
-               .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Post>()
-               .HasOne(d => d.Person)
-               .WithMany()
-               .OnDelete(DeleteBehavior.Restrict);
+                //.HasMany(p => p.FirstPerson)
+                //.WithRequired()
+                .HasKey(c => new { c.FirstPersonId, c.SecondPersonId });
+
+            //modelBuilder.Entity<Friend>()
+            //    .OnDelete(DeleteBehavior.Restrict);
+                //.HasConstraintName("FK_Friend");
+                //.WillCascadeOnDelete(false);
+
+            //modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+            //modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+
+
+            //modelBuilder.Entity<Post>()
+            //   .HasOne(d => d.Author)
+            //   .WithMany()
+            //   .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Post>()
+            //   .HasOne(d => d.Person)
+            //   .WithMany()
+            //   .OnDelete(DeleteBehavior.Restrict);
 
         }
     }
