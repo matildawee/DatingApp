@@ -13,9 +13,6 @@ namespace DatingApp.Controllers
     {
         private readonly DatingAppContext _context;
 
-        [TempData]
-        public string StatusMessage { get; set; }
-
         public PersonController(DatingAppContext context)
         {
             _context = context;
@@ -40,40 +37,26 @@ namespace DatingApp.Controllers
             return View();
         }
 
-        public async Task<IActionResult> UpdateProfile()
+        public async Task<IActionResult> Edit([Bind("PersonId,Email,FirstName,LastName,Description")] Person person)
         {
-            //StatusMessage = "det gick bra";
-            var user = await _context.Persons
-               .FirstOrDefaultAsync(m => m.Email == User.Identity.Name);
-
-            var id = user.PersonId;
-            
-            if (id == null)
+            if (person.PersonId == null)
             {
                 return NotFound();
             }
-            var personToUpdate = await _context.Persons.FirstOrDefaultAsync(s => s.PersonId == id);
-            //personToUpdate.Description = "hårdkodad beskrivning";
-
-
-            if (await TryUpdateModelAsync<Person>(personToUpdate, "",
-                    s => s.FirstName, s => s.LastName, s => s.Description))
+            if (ModelState.IsValid)
             {
                 try
                 {
-                    
+                    _context.Update(person);
                     await _context.SaveChangesAsync();
-                    
                 }
-                catch (DbUpdateException /* ex */)
+                catch (DbUpdateConcurrencyException)
                 {
-                    //Log the error (uncomment ex variable name and write a log.)
-                    ModelState.AddModelError("", "Unable to save changes. " +
-                        "Try again, and if the problem persists, " +
-                        "see your system administrator.");
+                    throw;
                 }
             }
-            return View("Profile", personToUpdate);
+            TempData["Success"] = "Profile was updated successfully.";
+            return View("Profile");
         }
     }
 }
