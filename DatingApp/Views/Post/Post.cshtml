@@ -1,4 +1,4 @@
-﻿@model DataLayer.Models.Person
+﻿@model IEnumerable<DataLayer.Models.Post>
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
@@ -11,8 +11,15 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <h1>Posts</h1>
-
+    foreach (var item in Model)
+    {
+        @*<h3>@item.Author.FirstName @item.Author.LastName</h3>*@
+        <h3>@item.Timestamp</h3>
+        <h3>@item.PostText</h3>
+    }
     
+
+
 }
 else
 {

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(DatingAppContext))]
-    [Migration("20210104102639_hejmigration")]
+    [Migration("20210104141748_hejmigration")]
     partial class hejmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -44,7 +44,7 @@ namespace DatingApp.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Edit([Bind("PersonId,Email,FirstName,LastName,Description")] Person person)
+        public async Task<IActionResult> Edit([Bind("PersonId,Email,FirstName,LastName,Description, Picture")] Person person)
         {
             if (person.PersonId == null)
             {
@@ -63,7 +63,7 @@ namespace DatingApp.Controllers
                 }
             }
             TempData["Success"] = "Profile was updated successfully.";
-            return View("Profile");
+            return View("MyProfile");
         }
     }
 }

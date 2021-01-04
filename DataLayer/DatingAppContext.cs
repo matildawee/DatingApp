@@ -24,6 +24,11 @@ namespace DataLayer
             modelBuilder.Entity<Post>().ToTable("Post");
             modelBuilder.Entity<Person>().ToTable("Person");
 
+            //modelBuilder.Entity<Person>()
+            //   .HasMany(d => d.Posts)
+            //   .WithOne(a => a.Author)
+            //   .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<FriendRequest>()
                .HasOne(d => d.Sender)
                .WithMany()
