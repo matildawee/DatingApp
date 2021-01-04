@@ -40,7 +40,7 @@ namespace DatingApp.Data
             var posts = new Post[]
             {
                 new Post {PersonId = 1, AuthorId = 2,
-                    PostText = "hej", Timestam = DateTime.Now}
+                    PostText = "hej", Timestamp = DateTime.Now}
             };
             foreach (Post p in posts)
             {

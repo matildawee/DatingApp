@@ -12,7 +12,7 @@ namespace DataLayer.Models
 
         //DateTime localDate = DateTime.Now;
         //public DateTime Timestamp = DateTime.Now;
-        public DateTime Timestam { get; set; }
+        public DateTime Timestamp { get; set; }
         public int PersonId { get; set; }
         public Person Person { get; set; }
         public int AuthorId { get; set; }

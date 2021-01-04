@@ -33,7 +33,8 @@ namespace DataLayer
                .WithMany()
                .OnDelete(DeleteBehavior.Restrict);
 
-            //modelBuilder.Entity<Friend>()
+
+            //modelBuilder.Entity<Friend>()     <<----- denna funkar att köra men ger bara en primary key
             //   .HasOne(d => d.FirstPerson)
             //   .WithMany()
             //   .OnDelete(DeleteBehavior.Restrict);
@@ -42,9 +43,9 @@ namespace DataLayer
             //   .WithMany()
             //   .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Friend>()
-                //.HasMany(p => p.FirstPerson)
-                //.WithRequired()
+            modelBuilder.Entity<Friend>()       // <<------ denna blir rätt med nycklar men blir fel med delete
+                //.HasMany(p => p.FirstPerson)              man kan köra denna och ändra manuellt i migrationen sålänge
+                //.WithRequired()                           till onDelete: ReferentialAction.Restrict);
                 .HasKey(c => new { c.FirstPersonId, c.SecondPersonId });
 
             //modelBuilder.Entity<Friend>()
@@ -56,7 +57,7 @@ namespace DataLayer
             //modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
 
 
-            //modelBuilder.Entity<Post>()
+            //modelBuilder.Entity<Post>()    <<------ tror inte denna behövs
             //   .HasOne(d => d.Author)
             //   .WithMany()
             //   .OnDelete(DeleteBehavior.Restrict);
