@@ -2,7 +2,7 @@
 
 namespace DataLayer.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class hejmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -33,8 +33,7 @@ namespace DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Friend", x => x.FirstPersonId);
-                    table.PrimaryKey("PK_Friend2", x => x.SecondPersonId);
+                    table.PrimaryKey("PK_Friend", x => new { x.FirstPersonId, x.SecondPersonId });
                     table.ForeignKey(
                         name: "FK_Friend_Person_FirstPersonId",
                         column: x => x.FirstPersonId,

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(DatingAppContext))]
-    [Migration("20201222161755_InitialCreate ")]
-    partial class InitialCreate
+    [Migration("20201230095155_hejmigration33")]
+    partial class hejmigration33
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,7 +29,10 @@ namespace DataLayer.Migrations
                     b.Property<int>("SecondPersonId")
                         .HasColumnType("int");
 
-                    b.HasKey("FirstPersonId");
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FirstPersonId", "SecondPersonId");
 
                     b.HasIndex("SecondPersonId");
 
@@ -107,6 +110,9 @@ namespace DataLayer.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<DateTime>("Timestam")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("PostId");
 
                     b.HasIndex("AuthorId");
@@ -121,13 +127,13 @@ namespace DataLayer.Migrations
                     b.HasOne("DataLayer.Models.Person", "FirstPerson")
                         .WithMany()
                         .HasForeignKey("FirstPersonId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DataLayer.Models.Person", "SecondPerson")
                         .WithMany()
                         .HasForeignKey("SecondPersonId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("FirstPerson");
@@ -158,13 +164,13 @@ namespace DataLayer.Migrations
                     b.HasOne("DataLayer.Models.Person", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DataLayer.Models.Person", "Person")
                         .WithMany()
                         .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Author");

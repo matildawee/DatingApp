@@ -32,22 +32,39 @@ namespace DataLayer
                .HasOne(d => d.Recevier)
                .WithMany()
                .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Friend>()
-               .HasOne(d => d.FirstPerson)
-               .WithMany()
-               .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Friend>()
-               .HasOne(d => d.SecondPerson)
-               .WithMany()
-               .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Post>()
-               .HasOne(d => d.Author)
-               .WithMany()
-               .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Post>()
-               .HasOne(d => d.Person)
-               .WithMany()
-               .OnDelete(DeleteBehavior.Restrict);
+
+
+            //modelBuilder.Entity<Friend>()     <<----- denna funkar att köra men ger bara en primary key
+            //   .HasOne(d => d.FirstPerson)
+            //   .WithMany()
+            //   .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Friend>()
+            //   .HasOne(d => d.SecondPerson)
+            //   .WithMany()
+            //   .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Friend>()       // <<------ denna blir rätt med nycklar men blir fel med delete
+                //.HasMany(p => p.FirstPerson)              man kan köra denna och ändra manuellt i migrationen sålänge
+                //.WithRequired()                           till onDelete: ReferentialAction.Restrict);
+                .HasKey(c => new { c.FirstPersonId, c.SecondPersonId });
+
+            //modelBuilder.Entity<Friend>()
+            //    .OnDelete(DeleteBehavior.Restrict);
+                //.HasConstraintName("FK_Friend");
+                //.WillCascadeOnDelete(false);
+
+            //modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+            //modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+
+
+            //modelBuilder.Entity<Post>()    <<------ tror inte denna behövs
+            //   .HasOne(d => d.Author)
+            //   .WithMany()
+            //   .OnDelete(DeleteBehavior.Restrict);
+            //modelBuilder.Entity<Post>()
+            //   .HasOne(d => d.Person)
+            //   .WithMany()
+            //   .OnDelete(DeleteBehavior.Restrict);
 
         }
     }
