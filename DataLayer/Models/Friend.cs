@@ -13,9 +13,11 @@ namespace DataLayer.Models
         public int FirstPersonId { get; set; }
         public Person FirstPerson { get; set; }
 
-        
+        [Key]
         [ForeignKey("SecondPerson")]
         public int SecondPersonId { get; set; }
         public Person SecondPerson { get; set; }
+
+        public string Category { get; set; }
     }
 }
