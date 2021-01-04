@@ -17,11 +17,18 @@ namespace DatingApp.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Profile(int id)
         {
-            return View();
+            var user = await _context.Persons
+                .FirstOrDefaultAsync(m => m.PersonId == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
         }
-        public async Task<IActionResult> Profile()
+        public async Task<IActionResult> MyProfile()
         { 
             var user = await _context.Persons
                 .FirstOrDefaultAsync(m => m.Email == User.Identity.Name);
