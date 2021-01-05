@@ -29,5 +29,17 @@ namespace DataLayer.Repositories
         {
             return items.Where((p) => p.FirstName.Contains(name) || p.LastName.Contains(name)).ToList();
         }
+
+        public int GetIdByUserIdentityEmail(string email)
+        {
+            int id = items.FirstOrDefault(p => p.Email.Equals(email)).PersonId;
+            return id;
+        }
+
+        public Person GetPersonById(int id)
+        {
+            Person person = items.FirstOrDefault(p => p.PersonId == id);
+            return person;
+        }
     }
 }

@@ -23,6 +23,10 @@ namespace DataLayer.Repositories
 
         public DbSet<TValue> items => context.Set<TValue>();
 
+        public void SaveChanges()
+        {
+            context.SaveChanges();
+        }
 
     }
 }

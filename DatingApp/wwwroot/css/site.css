@@ -105,3 +105,7 @@ div.exempel {
     top: 32.5%;
     left: 27%;
 }
+
+#popupRequests {
+    padding: 10px;
+}
