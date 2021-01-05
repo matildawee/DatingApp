@@ -1,0 +1,34 @@
+﻿@model DatingApp.Models.PostUserViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+    ViewData["Title"] = "Posts";
+}
+
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <h1>Posts</h1>
+    foreach (var item in Model.Posts)
+    {
+
+        <h3>@item.PostText</h3>
+        <h3>@item.Timestamp</h3>
+        <h3>@item.Author.FirstName @item.Author.LastName</h3>
+
+    }
+
+
+
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+}

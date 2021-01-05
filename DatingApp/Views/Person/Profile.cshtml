@@ -1,4 +1,4 @@
-﻿@model DataLayer.Models.Person
+﻿@model DatingApp.Models.ProfileViewModel
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
@@ -28,16 +28,19 @@
             </div>*@
 
     </div>
-    <div>
-        <a class="nameLink" href="@Url.Action("Post", "Post", new { personid = @Model.PersonId })">
-            <h4 class="card-title">Posts</h4>
-        </a>
+    <!--<div>-->
+        @*<a class="nameLink" href="@Url.Action("Post", "Post", new { personid = @Model.PersonId })">
+                <h4 class="card-title">Posts</h4>
+            </a>*@
 
         @*<partial name="/Views/Post/Post.cshtml" for="@Model.PersonId" />*@
         @*@Html.Partial("/Views/Post/Post.cshtml", @Model.PersonId)*@
 
+    <!--</div>-->
+    <div class="col-lg-5" id="PostWallDiv">
+        @Html.Partial("/Views/Post/_Post.cshtml", Model.Posts)
+        <hr />
     </div>
-
 }
 else
 {
@@ -49,3 +52,9 @@ else
     </li>
 }
 
+
+
+
+@*<div class="col-lg-3" id="FriendListDiv">
+        @Html.Partial("_Friends", Model.Friends)
+    </div>*@

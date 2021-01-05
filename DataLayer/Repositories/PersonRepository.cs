@@ -10,11 +10,16 @@ namespace DataLayer.Repositories
     {
         public PersonRepository(DatingAppContext context) : base(context) { }
 
+        public Person GetPersonById(int Id)
+        {
+            return items.Find(Id);
+        }
+
         public List<Person> GetAllPersons()
         {
             return items.ToList();
         }
-
+        
         public List<Person> GetAllProfilesExceptCurrent(string mail)
         {
             return items.Where((p) => !p.Email.Equals(mail)).ToList();
