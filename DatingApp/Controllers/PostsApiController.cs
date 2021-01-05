@@ -10,7 +10,7 @@ using DataLayer.Models;
 
 namespace DatingApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Controllers")]
     [ApiController]
     public class PostsApiController : ControllerBase
     {
@@ -83,6 +83,34 @@ namespace DatingApp.Controllers
 
             return CreatedAtAction("GetPost", new { id = post.PostId }, post);
         }
+
+        //[HttpPost]
+        //public void PostPost(Post post)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        string postTo;
+        //        if (string.IsNullOrWhiteSpace(post.PostToId))
+        //        {
+        //            postTo = User.Identity.GetUserId();
+        //        }
+        //        else
+        //        {
+        //            postTo = post.PostToId;
+        //        }
+
+        //        Post postModel = new Post()
+        //        {
+        //            PostText = post.Text,
+        //            PostFromId = User.Identity.GetUserId(),
+        //            PostToId = postTo,
+        //            Timestamp = DateTime.Now
+        //        };
+
+        //        postRepository.Add(postModel);
+        //        postRepository.Save();
+        //    }
+        //}
 
         // DELETE: api/PostsApi/5
         [HttpDelete("{id}")]

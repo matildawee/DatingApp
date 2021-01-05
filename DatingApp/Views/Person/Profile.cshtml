@@ -16,27 +16,7 @@
         <h2>@Model.FirstName @Model.LastName</h2>
         <p>@Model.Description</p>
 
-
-        @*<div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>*@
-
-        @*<div class="form-group">
-                <input type="submit" value="Post" class="btn btn-primary" />
-            </div>*@
-
     </div>
-    <!--<div>-->
-        @*<a class="nameLink" href="@Url.Action("Post", "Post", new { personid = @Model.PersonId })">
-                <h4 class="card-title">Posts</h4>
-            </a>*@
-
-        @*<partial name="/Views/Post/Post.cshtml" for="@Model.PersonId" />*@
-        @*@Html.Partial("/Views/Post/Post.cshtml", @Model.PersonId)*@
-
-    <!--</div>-->
     <div class="col-lg-5" id="PostWallDiv">
         @Html.Partial("/Views/Post/_Post.cshtml", Model.Posts)
         <hr />
@@ -51,10 +31,3 @@ else
         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
     </li>
 }
-
-
-
-
-@*<div class="col-lg-3" id="FriendListDiv">
-        @Html.Partial("_Friends", Model.Friends)
-    </div>*@
