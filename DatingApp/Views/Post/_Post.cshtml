@@ -19,16 +19,16 @@
             </div>
             <footer class="card-footer">
                 <p class="float-left card-text">Characters Remaining: <span class="badge badge-pill badge-success" id="TextAreaWordCounter">300</span></p>
-
-
+                <button class="btn btn-primary float-right" id="SubmitPost">Submit Post</button>
+                <p id="TEST">TEST</p>
 
             </footer>
         </div>
     </div>
 
-    <button class="btn btn-primary float-right" id="SubmitPost">Submit Post</button>
-    @*<input type="button" id="SubmitPost" value="Save Data" />*@
-    <p id="TEST">TESTTESTEASTESTESSTSETSetesETS</p>
+    
+   
+    
 
     <h1>@Model.PersonId</h1>
 
@@ -64,24 +64,7 @@ else
 
     @section Scripts {
         
-        <script type="text/javascript">
-            $("#SubmitPost").click(function () {
-                //e.preventDefault();
-                $("#TEST").hide();
-                //var post = new Post();
-                //post.Person = Model.PersonId;
-                //post.Author = $(User).val();
-                //post.PostText = $('#PostText').val();
-                //$.ajax({
-                //    url: "/PostsApiController/PostPost/",
-                //    type: "POST",
-                //    data: post,
-                //    contentType: "application/json; charset=utf-8",
-                //    dataType: "json",
-                //    success: alert("sent")
-                //});
-            });
-        </script>
+        
 
 @*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">
         $(() =>
