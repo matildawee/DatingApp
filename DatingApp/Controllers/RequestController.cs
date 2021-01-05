@@ -33,7 +33,7 @@ namespace DatingApp.Controllers
             //string email = User.Identity.Name;
             //int id = personRepository.GetIdByUserIdentityEmail(email);
             //List<FriendRequest> requests = requestRepository.GetAllRequestsSentToUser(id);
-            //if(requests.Count >= 1)
+            //if (requests.Count >= 1)
             //{
             //    IEnumerable<RequestViewModel> model = requests.Select((r) => new RequestViewModel()
             //    {
@@ -46,22 +46,24 @@ namespace DatingApp.Controllers
             //else
             //{
             //    return PartialView("_NoRequests");
-            //} 
-            RequestViewModel r1 = new RequestViewModel()
-            {
-                FriendRequestId = 1,
-                SenderId = 1,
-                FullName = "Anna" + " " + "Joe",
-            };
-            List<RequestViewModel> list = new List<RequestViewModel>();
-            list.Add(r1);
-            IEnumerable<RequestViewModel> model = list.Select((r) => new RequestViewModel()
-            {
-                FriendRequestId = r.FriendRequestId,
-                SenderId = r.SenderId,
-                FullName = r.FullName
-            });
-            return PartialView("_Requests", model);
+            //}
+
+            return PartialView("_NoRequests");
+            //RequestViewModel r1 = new RequestViewModel()
+            //{
+            //    FriendRequestId = 1,
+            //    SenderId = 1,
+            //    FullName = "Anna" + " " + "Joe",
+            //};
+            //List<RequestViewModel> list = new List<RequestViewModel>();
+            //list.Add(r1);
+            //IEnumerable<RequestViewModel> model = list.Select((r) => new RequestViewModel()
+            //{
+            //    FriendRequestId = r.FriendRequestId,
+            //    SenderId = r.SenderId,
+            //    FullName = r.FullName
+            //});
+            //return PartialView("_Requests", model);
         }
 
         [HttpPost]

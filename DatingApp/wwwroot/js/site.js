@@ -20,17 +20,22 @@ popup.hide();
 //});
 
 ref.click(function ShowPopUp() {
-    popup.show();
-    var popper = new Popper(ref, popup, {
-        placement: 'bottom',
-        modifiers: {
-            offset: {
-                enabled: true,
-                offset: "0, 10"
+    if ($(popup).is(":hidden")) {
+        popup.show();
+        var popper = new Popper(ref, popup, {
+            placement: 'bottom',
+            modifiers: {
+                offset: {
+                    enabled: true,
+                    offset: "0, 10"
+                }
             }
-        }
-    });
-    Update_Content();
+        });
+        Update_Content();
+    }
+    else {
+        popup.hide();
+    }
 });
 
 function Update_Content() {
