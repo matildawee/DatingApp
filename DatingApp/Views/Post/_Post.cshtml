@@ -9,7 +9,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <h1>Posts</h1>
-    <div>
+    <div id="PostWall">
         <div class="card border border-danger bg-light mb-3" id="CreatePostCard">
             <div class="card-header">
                 <h4><span class="card-title">Create Post</span></h4>
@@ -26,24 +26,18 @@
         </div>
     </div>
 
-    
-   
-    
-
     <h1>@Model.PersonId</h1>
 
     foreach (var item in Model.Posts)
     {
-
         <h3>Author: @item.Author.FirstName @item.Author.LastName</h3>
         <h3>Date: @item.Timestamp</h3>
 
         <h3>@item.PostText</h3>
     }
 
-
-
 }
+
 else
 {
     <li class="nav-item">
@@ -52,40 +46,4 @@ else
     <li class="nav-item">
         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
     </li>
-}
-
-
-
-
-     @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
-            type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"*@
-
-
-    @section Scripts {
-        
-        
-
-@*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">
-        $(() =>
-            $("#SubmitPost").click(function () {
-                e.preventDefault();
-
-                var post = new Post();
-                post.Person = Model.PersonId;
-                post.Author = $(User).val();
-                post.PostText = $('#PostText').val();
-                $.ajax({
-                    url: "/PostsApiController/Post",
-                    type: "POST",
-                    data: post,
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: alert("sent")
-                });
-            })
-        );
-    </script>
-
-    <partial name="_ValidationScriptsPartial" />*@
 }

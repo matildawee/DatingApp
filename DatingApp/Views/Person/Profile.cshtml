@@ -12,7 +12,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <div>
-        <img width="200" height="200" src="@Url.Action("RenderProfileImage", "Person", new { userId = @Model.PersonId })" />
+        <img width="200" height="200" @*src="@Url.Action("RenderProfileImage", "Person", new { userId = @Model.PersonId })"*@ />
         <h2>@Model.FirstName @Model.LastName</h2>
         <p>@Model.Description</p>
 
