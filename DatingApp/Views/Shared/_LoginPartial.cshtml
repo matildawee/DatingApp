@@ -5,6 +5,12 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
+        @*<li>
+                <div id="popupRequests">
+
+                </div>
+                <button id="showRequests">Friend Requests</button>
+            </li>*@
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Email" title="Manage">Hello @User.Identity.Name!</a>
         </li>
@@ -16,6 +22,14 @@
     }
     else
     {
+        //ska tas bort
+        <li>
+            <div id="popupRequests">
+                
+            </div>
+            <button id="showRequests">Friend Requests</button>
+        </li>
+
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>
@@ -24,3 +38,5 @@
         </li>
     }
 </ul>
+
+
