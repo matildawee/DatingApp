@@ -10,10 +10,10 @@ namespace DataLayer.Repositories
     {
         public PersonRepository(DatingAppContext context) : base(context) { }
 
-        public Person GetPersonById(int Id)
-        {
-            return items.Find(Id);
-        }
+        //public Person GetPersonById(int Id)
+        //{
+        //    return items.Find(Id);
+        //}
 
         public List<Person> GetAllPersons()
         {
