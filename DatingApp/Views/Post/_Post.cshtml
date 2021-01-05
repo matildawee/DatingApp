@@ -1,0 +1,108 @@
+﻿@model DatingApp.Models.PostUserViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+    ViewData["Title"] = "Posts";
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <h1>Posts</h1>
+    <div>
+        <div class="card border border-danger bg-light mb-3" id="CreatePostCard">
+            <div class="card-header">
+                <h4><span class="card-title">Create Post</span></h4>
+            </div>
+            <div class="card-body">
+                <textarea class="form-control card-text" id="PostText" placeholder="What's on your mind?"></textarea>
+            </div>
+            <footer class="card-footer">
+                <p class="float-left card-text">Characters Remaining: <span class="badge badge-pill badge-success" id="TextAreaWordCounter">300</span></p>
+
+
+
+            </footer>
+        </div>
+    </div>
+
+    <button class="btn btn-primary float-right" id="SubmitPost">Submit Post</button>
+    @*<input type="button" id="SubmitPost" value="Save Data" />*@
+    <p id="TEST">TESTTESTEASTESTESSTSETSetesETS</p>
+
+    <h1>@Model.PersonId</h1>
+
+    foreach (var item in Model.Posts)
+    {
+
+        <h3>Author: @item.Author.FirstName @item.Author.LastName</h3>
+        <h3>Date: @item.Timestamp</h3>
+
+        <h3>@item.PostText</h3>
+    }
+
+
+
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+}
+
+
+
+
+     @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+            type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"*@
+
+
+    @section Scripts {
+        
+        <script type="text/javascript">
+            $("#SubmitPost").click(function () {
+                //e.preventDefault();
+                $("#TEST").hide();
+                //var post = new Post();
+                //post.Person = Model.PersonId;
+                //post.Author = $(User).val();
+                //post.PostText = $('#PostText').val();
+                //$.ajax({
+                //    url: "/PostsApiController/PostPost/",
+                //    type: "POST",
+                //    data: post,
+                //    contentType: "application/json; charset=utf-8",
+                //    dataType: "json",
+                //    success: alert("sent")
+                //});
+            });
+        </script>
+
+@*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">
+        $(() =>
+            $("#SubmitPost").click(function () {
+                e.preventDefault();
+
+                var post = new Post();
+                post.Person = Model.PersonId;
+                post.Author = $(User).val();
+                post.PostText = $('#PostText').val();
+                $.ajax({
+                    url: "/PostsApiController/Post",
+                    type: "POST",
+                    data: post,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: alert("sent")
+                });
+            })
+        );
+    </script>
+
+    <partial name="_ValidationScriptsPartial" />*@
+}

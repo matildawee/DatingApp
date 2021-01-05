@@ -55,16 +55,35 @@ namespace DatingApp.Controllers
             }
 
             List<Person> randomProfiles = new List<Person>();
-            for (int i = 0; i < 3; i++)
+            if(profiles.Count > 0)
             {
-                var profile = profiles[random.Next(profiles.Count)];
-                if (!randomProfiles.Exists((x) => x == profile))
+                if (profiles.Count == 1)
                 {
+                    var profile = profiles[0];
                     randomProfiles.Add(profile);
+                }
+                else if (profiles.Count == 2)
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        var profile = profiles[i];
+                        randomProfiles.Add(profile);
+                    }
                 }
                 else
                 {
-                    i--;
+                    for (int i = 0; i < 3; i++)
+                    {
+                        var profile = profiles[random.Next(profiles.Count)];
+                        if (!randomProfiles.Exists((x) => x == profile))
+                        {
+                            randomProfiles.Add(profile);
+                        }
+                        else
+                        {
+                            i--;
+                        }
+                    }
                 }
             }
             return View(randomProfiles);

@@ -46,7 +46,7 @@
                 <a href=@Url.Action("Index", "Person", new { id = item.PersonId })>
                     <img width="200" height="200" src="@Url.Action("RenderProfileImage", "Person", new { userId = item.PersonId })" />
                 </a>
-                <a class="nameLink" href="@Url.Action("Index", "Person", new { id = item.PersonId })">
+                <a class="nameLink" href="@Url.Action("Profile", "Person", new { id = item.PersonId })">
                     <h4 class="card-title">@item.FirstName @item.LastName</h4>
                 </a>
                 <p class="card-text">@item.Description</p>

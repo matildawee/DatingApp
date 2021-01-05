@@ -109,7 +109,7 @@ namespace DatingApp.Areas.Identity.Pages.Account
                     _context.SaveChanges();
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Profile", "Person");
+                    return RedirectToAction("MyProfile", "Person");
 
                     /*_logger.LogInformation("User created a new account with password.");
 

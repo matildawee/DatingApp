@@ -24,6 +24,11 @@ namespace DataLayer
             modelBuilder.Entity<Post>().ToTable("Post");
             modelBuilder.Entity<Person>().ToTable("Person");
 
+            //modelBuilder.Entity<Person>()
+            //   .HasMany(d => d.Posts)
+            //   .WithOne(a => a.Author)
+            //   .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<FriendRequest>()
                .HasOne(d => d.Sender)
                .WithMany()
@@ -50,21 +55,21 @@ namespace DataLayer
 
             //modelBuilder.Entity<Friend>()
             //    .OnDelete(DeleteBehavior.Restrict);
-                //.HasConstraintName("FK_Friend");
-                //.WillCascadeOnDelete(false);
+            //.HasConstraintName("FK_Friend");
+            //.WillCascadeOnDelete(false);
 
             //modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             //modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
 
 
-            //modelBuilder.Entity<Post>()    <<------ tror inte denna behövs
-            //   .HasOne(d => d.Author)
-            //   .WithMany()
-            //   .OnDelete(DeleteBehavior.Restrict);
-            //modelBuilder.Entity<Post>()
-            //   .HasOne(d => d.Person)
-            //   .WithMany()
-            //   .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Post>()    //<<------ tror inte denna behövs
+               .HasOne(d => d.Author)
+               .WithMany()
+               .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Post>()
+               .HasOne(d => d.Person)
+               .WithMany()
+               .OnDelete(DeleteBehavior.Restrict);
 
         }
     }
