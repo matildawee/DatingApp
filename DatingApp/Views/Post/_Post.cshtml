@@ -20,21 +20,21 @@
             <footer class="card-footer">
                 <p class="float-left card-text">Characters Remaining: <span class="badge badge-pill badge-success" id="TextAreaWordCounter">300</span></p>
                 <button class="btn btn-primary float-right" id="SubmitPost">Submit Post</button>
-                <p id="TEST">TEST</p>
+                <input id="PersonId" type="hidden" value="@Model.PersonId" />
+
 
             </footer>
         </div>
+
+        @foreach (var item in Model.Posts)
+        {
+            <h3>Author: @item.Author.FirstName @item.Author.LastName</h3>
+            <h3>Date: @item.Timestamp</h3>
+
+            <h3>@item.PostText</h3>
+        }
+
     </div>
-
-    <h1>@Model.PersonId</h1>
-
-    foreach (var item in Model.Posts)
-    {
-        <h3>Author: @item.Author.FirstName @item.Author.LastName</h3>
-        <h3>Date: @item.Timestamp</h3>
-
-        <h3>@item.PostText</h3>
-    }
 
 }
 

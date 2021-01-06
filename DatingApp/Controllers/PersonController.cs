@@ -25,14 +25,6 @@ namespace DatingApp.Controllers
         }
         public IActionResult Profile(int id)
         {
-            //var user = await _context.Persons
-            //    .FirstOrDefaultAsync(m => m.PersonId == id);
-            //if (user == null)
-            //{
-            //    return NotFound();
-            //}
-            //return View(user);
-
             Person user = personRepository.GetPersonById((int)id);
             List<Post> posts = postRepository.GetAllPostsByPersonId((int)id);
             PostUserViewModel postUserViewModel = CreatePostUserViewModel(posts, (int)id);
@@ -80,7 +72,8 @@ namespace DatingApp.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Edit([Bind("PersonId,Email,FirstName,LastName,Description, Picture")] Person person)
+        
+        public async Task<IActionResult> Edit([Bind(/*Exclude = "Picture"*/ "PersonId,Email,FirstName,LastName,Description, Picture")] Person person)
         {
             if (person.PersonId == null)
             {

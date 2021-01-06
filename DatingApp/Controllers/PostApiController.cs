@@ -1,62 +1,74 @@
 ﻿using DataLayer;
 using DataLayer.Models;
+using DataLayer.Repositories;
+using DatingApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Http;
-using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
-
 namespace DatingApp.Controllers
 {
-    //[Route("api/[controller]")]
-    //[ApiController]
-    public class PostApiController : ApiController
+    [Route("api/[controller]")]
+    [ApiController]
+    [AllowAnonymous]
+    public class PostApiController : ControllerBase
     {
         private readonly DatingAppContext _context;
-
+        private PersonRepository personRepository;
+        private PostRepository postRepository;
         public PostApiController(DatingAppContext context)
         {
             _context = context;
+            personRepository = new PersonRepository(context);
+            postRepository = new PostRepository(context);
         }
+
         [HttpPost]
+        [Route("AddPost")]
         public void AddPost(Post post)
         {
-            
+
             var ja = post.PersonId;
-            var hej = "h";
-            //if (ModelState.IsValid)
-            //{
-            //    string postTo;
-            //    if (string.IsNullOrWhiteSpace(post.PostToId))
-            //    {
-            //        postTo = User.Identity.GetUserId();
-            //    }
-            //    else
-            //    {
-            //        postTo = post.PostToId;
-            //    }
+            if (ModelState.IsValid)
+            {
+                if (post.PersonId == 0)
+                {
+                    NotFound();
+                }
 
-            //    PostModels postModel = new PostModels()
-            //    {
-            //        Text = post.Text,
-            //        PostFromId = User.Identity.GetUserId(),
-            //        PostToId = postTo,
-            //        PostDateTime = DateTime.Now
-            //    };
+                Post newPost = new Post()
+                {
+                    PostText = post.PostText,
+                    PersonId = post.PersonId,
+                    AuthorId = personRepository.GetIdByUserIdentityEmail(User.Identity.Name),
+                    Timestamp = DateTime.Now
+                };
 
-            //    postRepository.Add(postModel);
-            //    postRepository.Save();
-            //}
+                _context.Posts.Add(newPost);
+                _context.SaveChanges();
+            }
         }
 
-        //[HttpDelete]
-        //public void DeletePost(int id)
+        //[HttpGet]
+        //[Route("UpdatePosts")]
+        //public PartialViewResult UpdatePosts(int id)
         //{
-        //    postRepository.Remove(id);
-        //    postRepository.Save();
+        //    List<Post> posts = postRepository.GetAllPostsByPersonId(id);
+        //    PostUserViewModel model = ConvertPostToPostViewModelForUsers(posts, id);
+        //    return PartialView("_Post", model);
         //}
-    } 
+
+        //[HttpGet]
+        //[Route("UpdatePosts")]
+        //public ActionResult UpdatePosts(Post model)
+        //{
+        //    return PartialView("_Post", model);
+        //}
+
+        
+    }
 }

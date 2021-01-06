@@ -42,18 +42,19 @@ function AddPost() {
         //} else {
         //    post = { Text: $("#PostText").val() };
         //}
-        var id = 1;
-        var text = "neeej";
+        var id = $("#PersonId").val();
+        var text = $("#PostText").val();
+        
         post = { PostText: text, PersonId: id };
-        var hej;
         $.ajax({
             type: "POST",
-            url: "/PostApi/AddPost",
+            url: "/api/PostApi/AddPost",
+            //url: "/api/PostApi/AddPost",
             data: JSON.stringify(post),
             contentType: "application/json;charset=UTF-8",
+            //dataType: "json",
             success: () => {
-                //Update_Wall();
-                alert(":O");
+                //UpdatePosts();
             },
             error: () => {
                 alert("Error: Failure to add post");
@@ -62,4 +63,14 @@ function AddPost() {
     } else {
         alert("Your post needs to consist of between 1 and 280 characters.")
     }
+}
+function UpdatePosts() {
+    var serviceUrl = "/api/PostApi/UpdatePosts/" + $("#PersonId").val();
+    var request = $.post(serviceUrl);
+    request.done(function (data) {
+        $("#PostWall").html(data);
+        //$("#PostWall").load("Url.Action("Profile","Persons")")x§
+    }).fail(() => {
+        console.log("Error: Failure to update posts");
+    });
 }
