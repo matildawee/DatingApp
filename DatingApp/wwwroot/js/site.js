@@ -3,22 +3,30 @@
 
 // Write your JavaScript code.
 
-//$(document).ready(() => {
-//    ShowPopUp();
-//    ShowPopUp();
-//});
 
-//$("#popupRequests").on("click", "#AcceptBtn", AcceptRequest);
-//$("#popupRequests").on("click", "#DeclineBtn", DeclineRequest);
+// -- Friend Request -- 
+
+//Getting and setting the number of friend requests when the page has been loaded.
+$(document).ready(function () {
+    setInterval(showNumberOfRequests, 5000);
+    function showNumberOfRequests() {;
+        SetNumberOfRequests();
+    }
+});
+
+$("#popupRequests").on("click", "#AcceptBtn", AcceptRequest);
+$("#popupRequests").on("click", "#DeclineBtn", DeclineRequest);
 
 var ref = $('#showRequests');
 var popup = $('#popupRequests');
+
+//Hiding the popup div and friedn requests notification as default
 popup.hide();
+$("#requestQty").hide();
 
-//ref.click(function () {
-//    popup.show();
-//});
-
+/*If the friend requests button is clicked and the popup div is hidden, it shows up. A popper is used for positioning the div
+ * underneath the button. Methods for updating the content and getting number of requests is called. Otherwise the popup div
+ * will be hidden.*/
 ref.click(function ShowPopUp() {
     if ($(popup).is(":hidden")) {
         popup.show();
@@ -32,6 +40,7 @@ ref.click(function ShowPopUp() {
             }
         });
         Update_Content();
+        SetNumberOfRequests();
     }
     else {
         popup.hide();
@@ -53,6 +62,27 @@ function Update_Content() {
     });
 }
 
+function SetNumberOfRequests() {
+    $.ajax({
+        type: "POST",
+        url: "/Request/GetNumberOfRequests/",
+        datatype: "JSON",
+        success: function (data) {
+            var number = data.data;
+            if (number >= 1) {
+                $("#requestQty").show();
+                $("#requestQty").text(number); // Set number
+            }
+            else {
+                $("#requestQty").hide();
+            }
+        },
+        error: () => {
+            alert("Error: Unable to fetch and display number of friend requests");
+        }
+    });
+}
+
 function AcceptRequest() {
     var UserId = this.attributes[1].value;
     $.ajax({
@@ -61,7 +91,7 @@ function AcceptRequest() {
         dataType: "JSON",
         success: () => {
             Update_Content();
-            //SetNumberOfNotifications();
+            SetNumberOfRequests();
             //var currentUrl = window.location.href;
             //var urlArray = currentUrl.split("/Profile/Index/");
             //if (urlArray.length > 1) {
@@ -76,6 +106,34 @@ function AcceptRequest() {
         },
         error: () => {
             alert("Error: Unable to accept friend request.");
+        }
+    });
+}
+
+function DeclineRequest() {
+    var UserId = this.attributes[1].value;
+    $.ajax({
+        type: "POST",
+        url: "/Request/DeclineRequest/" + UserId,
+        dataType: "JSON",
+        success: () => {
+            Update_Content();
+            SetNumberOfRequests();
+
+            //var currentUrl = window.location.href;
+            //var urlArray = currentUrl.split("/Profile/Index/");
+            //if (urlArray.length > 1) {
+            //    if (urlArray[1] == UserId) {
+            //        ButtonGroupNotFriends();
+            //    }
+            //}
+
+            //if ($("#NotificationNumberSpan").val() == 0) {
+            //    ToggleNotificationPopUpDivDisplay();
+            //}
+        },
+        error: () => {
+            alert("Error: Unable to decline friend request.");
         }
     });
 }

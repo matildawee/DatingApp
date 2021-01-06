@@ -2,15 +2,20 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
         @*<li>
-                <div id="popupRequests">
+            <div id="popupRequests">
 
-                </div>
-                <button id="showRequests">Friend Requests</button>
-            </li>*@
+            </div>
+            <a id="showRequests">
+                <span><i class="fas fa-user-friends"></i></span>
+                <span id="requestQty"></span>
+            </a>
+        </li>*@
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Email" title="Manage">Hello @User.Identity.Name!</a>
         </li>
@@ -25,9 +30,12 @@
         //ska tas bort
         <li>
             <div id="popupRequests">
-                
+
             </div>
-            <button id="showRequests">Friend Requests</button>
+            <a id="showRequests">
+                <span><i class="fas fa-user-friends"></i></span>
+                <span id="requestQty"></span>
+            </a>
         </li>
 
         <li class="nav-item">
