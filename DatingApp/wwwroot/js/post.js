@@ -1,19 +1,26 @@
 ﻿
+$("#PostWall").on("click", "#SubmitPost", AddPost);
 
-    $("#SubmitPost").click(function () {
-        //e.preventDefault();
-        $("#TEST").hide();
-                var post = new Post();
-                post.Person = Model.PersonId;
-                post.Author = $(User).val();
-                post.PostText = $('#PostText').val();
-                $.ajax({
-            url: "/PostsApiController/PostPost/",
+function AddPost() {
+    if ($("#PostText").val() != "" && $("#PostText").val().length <= 300) {
+        var post;
+        var id = $("#PersonId").val();
+        var text = $("#PostText").val();
+        
+        post = { PostText: text, PersonId: id };
+        $.ajax({
             type: "POST",
-            data: post,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: alert("sent")
+            url: "/api/PostApi/AddPost",
+            data: JSON.stringify(post),
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                location.reload(true);
+            },
+            error: () => {
+                alert("Error: Failure to add post");
+            }
         });
-    });
-       
+    } else {
+        alert("Your post needs to consist of between 1 and 300 characters.")
+    }
+}

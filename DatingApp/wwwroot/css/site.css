@@ -12,6 +12,12 @@ a {
   color: #0366d6;
 }
 
+.postClass {
+    color: black;
+    background-color: #d4e9ff;
+    border-color: black;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
