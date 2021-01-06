@@ -32,6 +32,18 @@ namespace DataLayer.Repositories
 
             //return items.Where(p => items.All(p => p.FirstPersonId.Equals(id))).ToList();
         }
-            
+           
+        public bool IsFriends(int currentUser, int id)
+        {
+            List<Friend> friends = items.Where((f) => f.FirstPersonId == currentUser && f.SecondPersonId == id).ToList();
+            if(friends.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

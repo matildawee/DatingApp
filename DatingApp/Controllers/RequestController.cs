@@ -97,5 +97,40 @@ namespace DatingApp.Controllers
             }
             return Json(new { Result = false });
         }
+
+        [HttpPost]
+        public ActionResult SendRequest(int id)
+        {
+            int currentUser = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
+            if (requestRepository.FrienRequestIncoming(currentUser, id) || requestRepository.FrienRequestOutgoing(currentUser, id))
+            {
+                return Json(new { result = false });
+            }
+            else
+            {
+                requestRepository.AddRequest(new FriendRequest
+                {
+                    SenderId = currentUser,
+                    ReceiverId = id,
+                });
+                return Json(new { result = true });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult GetFriendStatus()
+        {
+            //var d = "jaja";
+            //var e = "tjabba";
+            //if (d != e)
+            //{
+            //    return Json(new { text = "Tjoho" });
+            //}
+            //else
+            //{
+            //    return Json(new { text = "Nehe" });
+            //}
+            return Json(new { text = "Nehe" });
+        }
     }
 }

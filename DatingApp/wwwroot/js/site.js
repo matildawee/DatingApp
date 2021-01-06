@@ -137,3 +137,31 @@ function DeclineRequest() {
         }
     });
 }
+
+$(document).ready(function () {
+    //var d = new Date();
+    //if (d.getMonth() == 5) {
+    //    $("#friendStatus").text("tjoho");
+    //}
+    //else {
+    //    $("#friendStatus").text("nehee");
+    //}
+    testing();
+});
+
+function testing() {
+    $.ajax({
+        type: "POST",
+        url: "/Request/GetFriendStatus/",
+        dataType: "JSON",
+        success: function (data) {
+            var result = data.text;
+            //$("#friendStatus").text(result);
+            alert(result);
+        },
+        error: function (data) {
+            var r = data.text;
+            alert("Error: " + r);
+        }
+    });
+}
