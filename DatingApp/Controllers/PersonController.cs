@@ -85,7 +85,6 @@ namespace DatingApp.Controllers
 
         public FriendUserViewModel CreateFriendUserViewModel(List<Friend> friends, int personId)
         {
-            
             IEnumerable<FriendViewModel> friendsViewModel = friends.Select((p) => new FriendViewModel()
             {
                 FirstPerson = p.FirstPerson,
