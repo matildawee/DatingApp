@@ -11,7 +11,7 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <div>
+    <div class="text-center">
         <img width="200" height="200" @*src="@Url.Action("RenderProfileImage", "Person", new { userId = @Model.PersonId })"*@ />
         <h2>@Model.FirstName @Model.LastName</h2>
         <p>@Model.Description</p>
@@ -19,6 +19,10 @@
     </div>
     <div class="col-lg-5" id="PostWallDiv">
         @Html.Partial("/Views/Post/_Post.cshtml", Model.Posts)
+        <hr />
+    </div>
+    <div class="col-lg-5" id="PostWallDiv">
+        @Html.Partial("_Friend.cshtml", Model.Friends)
         <hr />
     </div>
 }

@@ -31,8 +31,6 @@ namespace DatingApp.Controllers
         [Route("AddPost")]
         public void AddPost(Post post)
         {
-
-            var ja = post.PersonId;
             if (ModelState.IsValid)
             {
                 if (post.PersonId == 0)
@@ -52,6 +50,5 @@ namespace DatingApp.Controllers
                 _context.SaveChanges();
             }
         }
-
     }
 }

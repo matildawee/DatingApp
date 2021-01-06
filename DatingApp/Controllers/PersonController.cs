@@ -4,6 +4,7 @@ using DataLayer.Repositories;
 using DatingApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +17,14 @@ namespace DatingApp.Controllers
         private readonly DatingAppContext _context;
         private PersonRepository personRepository;
         private PostRepository postRepository;
+        private FriendRepository friendRepository;
 
         public PersonController(DatingAppContext context)
         {
             _context = context;
             personRepository = new PersonRepository(context);
             postRepository = new PostRepository(context);
+            friendRepository = new FriendRepository(context);
         }
         public IActionResult Profile(int id)
         {
@@ -58,41 +61,67 @@ namespace DatingApp.Controllers
         }
         public async Task<IActionResult> MyProfile()
         {
-            var user = await _context.Persons
-                .FirstOrDefaultAsync(m => m.Email == User.Identity.Name);
-            if (user == null)
-            {
-                return NotFound();
-            }
+            string email = User.Identity.Name;
+            int id = personRepository.GetIdByUserIdentityEmail((string)email);
+            Person user = personRepository.GetPersonById((int)id);
+            List<Post> posts = postRepository.GetAllPostsByPersonId((int)id);
+            List<Friend> friends = friendRepository.GetAllFriendsByPersonId((int)id);
+            PostUserViewModel postUserViewModel = CreatePostUserViewModel(posts, (int)id);
+            FriendUserViewModel friendUserViewModel = CreateFriendUserViewModel(friends, (int)id);
 
-            return View(user);
+            ProfileViewModel profileViewModel = new ProfileViewModel
+            {
+                PersonId = user.PersonId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Description = user.Description,
+                Picture = user.Picture,
+                Email = user.Email,
+                Posts = postUserViewModel,
+                Friends = friendUserViewModel
+            };
+            return View(profileViewModel);
         }
+
+        public FriendUserViewModel CreateFriendUserViewModel(List<Friend> friends, int personId)
+        {
+            
+            IEnumerable<FriendViewModel> friendsViewModel = friends.Select((p) => new FriendViewModel()
+            {
+                FirstPerson = p.FirstPerson,
+                SecondPerson = p.SecondPerson
+            });
+
+            FriendUserViewModel friendUserViewModel = new FriendUserViewModel
+            {
+                PersonId = personId,
+                Friends = friendsViewModel.ToList()
+            };
+            return friendUserViewModel;
+        }
+
         public IActionResult Post()
         {
             return View();
         }
 
-        
-        public async Task<IActionResult> Edit([Bind(/*Exclude = "Picture"*/ "PersonId,Email,FirstName,LastName,Description, Picture")] Person person)
+        [HttpPost]
+        public void UpdateProfile(Person person)
         {
-            if (person.PersonId == null)
-            {
-                return NotFound();
-            }
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(person);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    throw;
-                }
-            }
-            TempData["Success"] = "Profile was updated successfully.";
-            return View("MyProfile");
+
+
+            var hej = person.FirstName;
+            var ye = person;
+            var bla ="";
+            //if (ModelState.IsValid)
+            //{
+            //    if (person.PersonId == 0)
+            //    {
+            //        NotFound();
+            //    }
+            //    _context.Update(person);
+            //    _context.SaveChanges();
+            //}
         }
     }
 }
