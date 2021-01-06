@@ -30,47 +30,37 @@ namespace DatingApp.Controllers
         [HttpGet]
         public PartialViewResult GetFriendRequests()
         {
-            //string email = User.Identity.Name;
-            //int id = personRepository.GetIdByUserIdentityEmail(email);
-            //List<FriendRequest> requests = requestRepository.GetAllRequestsSentToUser(id);
-            //if (requests.Count >= 1)
-            //{
-            //    IEnumerable<RequestViewModel> model = requests.Select((r) => new RequestViewModel()
-            //    {
-            //        FriendRequestId = r.FriendRequestId,
-            //        SenderId = r.SenderId,
-            //        FullName = r.Sender.FirstName + " " + r.Sender.LastName
-            //    });
-            //    return PartialView("_Requests", model);
-            //}
-            //else
-            //{
-            //    return PartialView("_NoRequests");
-            //}
+            string email = User.Identity.Name;
+            int id = personRepository.GetIdByUserIdentityEmail(email);
+            List<FriendRequest> requests = requestRepository.GetAllRequestsSentToUser(id);
+            if (requests.Count >= 1)
+            {
+                IEnumerable<RequestViewModel> model = requests.Select((r) => new RequestViewModel()
+                {
+                    FriendRequestId = r.FriendRequestId,
+                    SenderId = r.SenderId,
+                    FullName = r.Sender.FirstName + " " + r.Sender.LastName
+                });
+                return PartialView("_Requests", model);
+            }
+            else
+            {
+                return PartialView("_NoRequests");
+            }
+        }
 
-            return PartialView("_NoRequests");
-            //RequestViewModel r1 = new RequestViewModel()
-            //{
-            //    FriendRequestId = 1,
-            //    SenderId = 1,
-            //    FullName = "Anna" + " " + "Joe",
-            //};
-            //List<RequestViewModel> list = new List<RequestViewModel>();
-            //list.Add(r1);
-            //IEnumerable<RequestViewModel> model = list.Select((r) => new RequestViewModel()
-            //{
-            //    FriendRequestId = r.FriendRequestId,
-            //    SenderId = r.SenderId,
-            //    FullName = r.FullName
-            //});
-            //return PartialView("_Requests", model);
+        [HttpPost]
+        public ActionResult GetNumberOfRequests()
+        {
+            int id = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
+            List<FriendRequest> requests = requestRepository.GetAllRequestsSentToUser(id);
+            return Json(new {data = requests.Count });
         }
 
         [HttpPost]
         public ActionResult AcceptRequest(int id)
         {
             int currentUser = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
-            Person newFriend = personRepository.GetPersonById(id);
 
             List<FriendRequest> requests = requestRepository.GetAllRequestsSentToUser(currentUser);
             
@@ -106,6 +96,41 @@ namespace DatingApp.Controllers
                 }
             }
             return Json(new { Result = false });
+        }
+
+        [HttpPost]
+        public ActionResult SendRequest(int id)
+        {
+            int currentUser = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
+            if (requestRepository.FrienRequestIncoming(currentUser, id) || requestRepository.FrienRequestOutgoing(currentUser, id))
+            {
+                return Json(new { result = false });
+            }
+            else
+            {
+                requestRepository.AddRequest(new FriendRequest
+                {
+                    SenderId = currentUser,
+                    ReceiverId = id,
+                });
+                return Json(new { result = true });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult GetFriendStatus()
+        {
+            //var d = "jaja";
+            //var e = "tjabba";
+            //if (d != e)
+            //{
+            //    return Json(new { text = "Tjoho" });
+            //}
+            //else
+            //{
+            //    return Json(new { text = "Nehe" });
+            //}
+            return Json(new { text = "Nehe" });
         }
     }
 }
