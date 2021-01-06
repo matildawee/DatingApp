@@ -8,42 +8,53 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <h1>Posts</h1>
-    <div>
+    <h2>Posts</h2>
+    <div id="PostWall">
         <div class="card border border-danger bg-light mb-3" id="CreatePostCard">
             <div class="card-header">
                 <h4><span class="card-title">Create Post</span></h4>
             </div>
             <div class="card-body">
-                <textarea class="form-control card-text" id="PostText" placeholder="What's on your mind?"></textarea>
+                <textarea class="form-control card-text" id="PostText" placeholder="Write a comment"></textarea>
             </div>
             <footer class="card-footer">
                 <p class="float-left card-text">Characters Remaining: <span class="badge badge-pill badge-success" id="TextAreaWordCounter">300</span></p>
                 <button class="btn btn-primary float-right" id="SubmitPost">Submit Post</button>
-                <p id="TEST">TEST</p>
-
+                <input id="PersonId" type="hidden" value="@Model.PersonId" />
             </footer>
         </div>
+
+        @foreach (var item in Model.Posts)
+        {
+            <div class="card postClass">
+                <div class="card-header">
+                    <div class="media">
+                        <a href="@Url.Action("Profile", "Person", new { id = item.Author.PersonId })" class="card-link">
+                            <img class="mr-1" src="@Url.Action("RenderProfileImage", "Profile", new { id = item.Author.PersonId })" height="32" width="32" />
+                            <span class="badge badge-light">@item.Author.FirstName @item.Author.LastName</span>
+                        </a>
+                        @*<div class="media-body">
+                            <button type="button" class="btn close" data-toggle="modal" data-target="@HashTargetId">&times;</button>
+                        </div>*@
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">@item.PostText</p>
+                </div>
+                <footer class="card-footer">
+                    <div>
+                        <strong>Published: </strong>
+                        <span>@item.Timestamp</span>
+                    </div>
+                </footer>
+            </div>
+            <br/>
+        }
+
     </div>
 
-    
-   
-    
-
-    <h1>@Model.PersonId</h1>
-
-    foreach (var item in Model.Posts)
-    {
-
-        <h3>Author: @item.Author.FirstName @item.Author.LastName</h3>
-        <h3>Date: @item.Timestamp</h3>
-
-        <h3>@item.PostText</h3>
-    }
-
-
-
 }
+
 else
 {
     <li class="nav-item">
@@ -52,40 +63,4 @@ else
     <li class="nav-item">
         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
     </li>
-}
-
-
-
-
-     @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
-            type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"*@
-
-
-    @section Scripts {
-        
-        
-
-@*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">
-        $(() =>
-            $("#SubmitPost").click(function () {
-                e.preventDefault();
-
-                var post = new Post();
-                post.Person = Model.PersonId;
-                post.Author = $(User).val();
-                post.PostText = $('#PostText').val();
-                $.ajax({
-                    url: "/PostsApiController/Post",
-                    type: "POST",
-                    data: post,
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: alert("sent")
-                });
-            })
-        );
-    </script>
-
-    <partial name="_ValidationScriptsPartial" />*@
 }

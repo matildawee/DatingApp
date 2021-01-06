@@ -16,6 +16,9 @@ namespace DatingApp.Models
 
         public string Picture { get; set; }
 
+        public string Email { get; set; }
+
         public PostUserViewModel Posts { get; set; }
+        public FriendUserViewModel Friends { get; set; }
     }
 }
