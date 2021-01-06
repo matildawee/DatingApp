@@ -53,22 +53,5 @@ namespace DatingApp.Controllers
             }
         }
 
-        //[HttpGet]
-        //[Route("UpdatePosts")]
-        //public PartialViewResult UpdatePosts(int id)
-        //{
-        //    List<Post> posts = postRepository.GetAllPostsByPersonId(id);
-        //    PostUserViewModel model = ConvertPostToPostViewModelForUsers(posts, id);
-        //    return PartialView("_Post", model);
-        //}
-
-        //[HttpGet]
-        //[Route("UpdatePosts")]
-        //public ActionResult UpdatePosts(Post model)
-        //{
-        //    return PartialView("_Post", model);
-        //}
-
-        
     }
 }

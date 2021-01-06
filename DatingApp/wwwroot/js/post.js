@@ -29,19 +29,8 @@
 $("#PostWall").on("click", "#SubmitPost", AddPost);
 
 function AddPost() {
-    //var currentUrl = window.location.href;
-    //var urlArray = currentUrl.split("/Profile/Index/");
-    //var Id = "";
     if ($("#PostText").val() != "" && $("#PostText").val().length <= 280) {
         var post;
-        //if (urlArray.length >= 2) {
-        //    Id = urlArray[1];
-        //}
-        //if (!Id == "") {
-        //    post = { Text: $("#PostText").val(), PostToId: Id };
-        //} else {
-        //    post = { Text: $("#PostText").val() };
-        //}
         var id = $("#PersonId").val();
         var text = $("#PostText").val();
         
@@ -49,28 +38,16 @@ function AddPost() {
         $.ajax({
             type: "POST",
             url: "/api/PostApi/AddPost",
-            //url: "/api/PostApi/AddPost",
             data: JSON.stringify(post),
             contentType: "application/json;charset=UTF-8",
-            //dataType: "json",
-            success: () => {
-                //UpdatePosts();
+            success: function (data) {
+                location.reload(true);
             },
             error: () => {
                 alert("Error: Failure to add post");
             }
         });
     } else {
-        alert("Your post needs to consist of between 1 and 280 characters.")
+        alert("Your post needs to consist of between 1 and 300 characters.")
     }
-}
-function UpdatePosts() {
-    var serviceUrl = "/api/PostApi/UpdatePosts/" + $("#PersonId").val();
-    var request = $.post(serviceUrl);
-    request.done(function (data) {
-        $("#PostWall").html(data);
-        //$("#PostWall").load("Url.Action("Profile","Persons")")x§
-    }).fail(() => {
-        console.log("Error: Failure to update posts");
-    });
 }
