@@ -25,5 +25,7 @@ namespace DataLayer.Models
         public string Description { get; set; }
 
         public string Picture { get; set; }
+
+        //public List<Post> Posts { get; set; }
     }
 }

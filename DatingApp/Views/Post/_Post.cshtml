@@ -1,0 +1,66 @@
+﻿@model DatingApp.Models.PostUserViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+    ViewData["Title"] = "Posts";
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <h2>Posts</h2>
+    <div id="PostWall">
+        <div class="card border border-danger bg-light mb-3" id="CreatePostCard">
+            <div class="card-header">
+                <h4><span class="card-title">Create Post</span></h4>
+            </div>
+            <div class="card-body">
+                <textarea class="form-control card-text" id="PostText" placeholder="Write a comment"></textarea>
+            </div>
+            <footer class="card-footer">
+                <p class="float-left card-text">Characters Remaining: <span class="badge badge-pill badge-success" id="TextAreaWordCounter">300</span></p>
+                <button class="btn btn-primary float-right" id="SubmitPost">Submit Post</button>
+                <input id="PersonId" type="hidden" value="@Model.PersonId" />
+            </footer>
+        </div>
+
+        @foreach (var item in Model.Posts)
+        {
+            <div class="card postClass">
+                <div class="card-header">
+                    <div class="media">
+                        <a href="@Url.Action("Profile", "Person", new { id = item.Author.PersonId })" class="card-link">
+                            <img class="mr-1" src="@Url.Action("RenderProfileImage", "Profile", new { id = item.Author.PersonId })" height="32" width="32" />
+                            <span class="badge badge-light">@item.Author.FirstName @item.Author.LastName</span>
+                        </a>
+                        @*<div class="media-body">
+                            <button type="button" class="btn close" data-toggle="modal" data-target="@HashTargetId">&times;</button>
+                        </div>*@
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">@item.PostText</p>
+                </div>
+                <footer class="card-footer">
+                    <div>
+                        <strong>Published: </strong>
+                        <span>@item.Timestamp</span>
+                    </div>
+                </footer>
+            </div>
+            <br/>
+        }
+
+    </div>
+
+}
+
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+}

@@ -1,0 +1,15 @@
+﻿@model IEnumerable<RequestViewModel>
+
+<div>
+    @foreach (var item in Model) {
+    <div>
+        <a href="@Url.Action("Profile", "Person", new { id = item.SenderId })">
+            <span>@item.FullName</span>
+        </a>
+        <div class="float-right">
+            <button class="btn btn-success NotificationsAcceptBtn" data-id="@item.SenderId">Accept</button>
+            <button class="btn btn-danger NotificationsDeclineBtn" data-id="@item.SenderId">Decline</button>
+        </div>
+    </div>
+    }
+</div>

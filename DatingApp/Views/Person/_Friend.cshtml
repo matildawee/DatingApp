@@ -1,0 +1,38 @@
+﻿@model DatingApp.Models.FriendUserViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+    ViewData["Title"] = "Friend";
+}
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <h1>Friends</h1>
+
+    @foreach (var item in Model.Friends)
+    {
+        @*<h4>@item.Friends.SecondPerson.FirstName</h4>*@
+
+
+
+@*if (@item.SecondPerson.PersonId == Model.PersonId)
+        {
+            <h4>@item.FirstPerson.FirstName</h4>
+        }
+        if (item.FirstPerson.PersonId == Model.PersonId)
+        {
+            <h4>@item.SecondPerson.FirstName</h4>
+        }*@              }
+
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+}
