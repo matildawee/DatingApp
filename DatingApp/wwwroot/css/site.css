@@ -112,6 +112,31 @@ div.exempel {
     left: 27%;
 }
 
+/*Add padding to the pop up div*/
 #popupRequests {
     padding: 10px;
 }
+
+/*Styling and positioning the friend requests button*/
+#showRequests {
+    background-color: #555;
+    color: white;
+    text-decoration: none;
+    padding: 6px 10px;
+    margin-right: 3em;
+    position: relative;
+    display: inline-block;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+/*Styling and positioning the notification for number of friend requests*/
+#showRequests #requestQty {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 4px 9px;
+    border-radius: 50%;
+    background: red;
+    color: white;
+ }

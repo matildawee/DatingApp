@@ -18,6 +18,7 @@ namespace DatingApp.Controllers
         private PersonRepository personRepository;
         private PostRepository postRepository;
         private FriendRepository friendRepository;
+        private FriendRequestRepository requestRepository;
 
         public PersonController(DatingAppContext context)
         {
@@ -25,7 +26,9 @@ namespace DatingApp.Controllers
             personRepository = new PersonRepository(context);
             postRepository = new PostRepository(context);
             friendRepository = new FriendRepository(context);
+            requestRepository = new FriendRequestRepository(context);
         }
+
         public IActionResult Profile(int id)
         {
             Person user = personRepository.GetPersonById((int)id);
@@ -40,8 +43,24 @@ namespace DatingApp.Controllers
                 Picture = user.Picture,
                 Posts = postUserViewModel
             };
+            ViewBag.PersonRelation = GetPersonRelation(id);
             return View(profileViewModel);
         }
+
+        public string GetPersonRelation(int id)
+        {
+            int currentUser = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
+            if (friendRepository.IsFriends(currentUser, id)) {
+                return "Friends";
+            } else if(requestRepository.FrienRequestOutgoing(currentUser, id)) {
+                return "OutgoingRequest";
+            } else if(requestRepository.FrienRequestIncoming(currentUser, id)) {
+                return "IncomingRequest";
+            } else {
+                return "NotFriends";
+            }
+        }
+
         public PostUserViewModel CreatePostUserViewModel(List<Post> posts, int personId)
         {
             IEnumerable<PostViewModel> postsViewModel = posts.Select((p) => new PostViewModel()
