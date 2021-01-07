@@ -17,7 +17,6 @@ namespace DatingApp.Controllers
         private readonly DatingAppContext _context;
         private PersonRepository personRepository;
         private PostRepository postRepository;
-        private FriendRepository friendRepository;
         private FriendRequestRepository requestRepository;
 
         public PersonController(DatingAppContext context)
@@ -25,7 +24,6 @@ namespace DatingApp.Controllers
             _context = context;
             personRepository = new PersonRepository(context);
             postRepository = new PostRepository(context);
-            friendRepository = new FriendRepository(context);
             requestRepository = new FriendRequestRepository(context);
         }
 
@@ -49,12 +47,12 @@ namespace DatingApp.Controllers
 
         public string GetPersonRelation(int id)
         {
-            int currentUser = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
-            if (friendRepository.IsFriends(currentUser, id)) {
+            int loggedInUser = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
+            if (requestRepository.IsFriends(loggedInUser, id)) {
                 return "Friends";
-            } else if(requestRepository.FrienRequestOutgoing(currentUser, id)) {
+            } else if(requestRepository.FriendRequestOutgoing(loggedInUser, id)) {
                 return "OutgoingRequest";
-            } else if(requestRepository.FrienRequestIncoming(currentUser, id)) {
+            } else if(requestRepository.FriendRequestIncoming(loggedInUser, id)) {
                 return "IncomingRequest";
             } else {
                 return "NotFriends";
@@ -84,7 +82,7 @@ namespace DatingApp.Controllers
             int id = personRepository.GetIdByUserIdentityEmail((string)email);
             Person user = personRepository.GetPersonById((int)id);
             List<Post> posts = postRepository.GetAllPostsByPersonId((int)id);
-            List<Friend> friends = friendRepository.GetAllFriendsByPersonId((int)id);
+            List<FriendRequest> friends = requestRepository.GetFriendsByPersonId((int)id);
             PostUserViewModel postUserViewModel = CreatePostUserViewModel(posts, (int)id);
             FriendUserViewModel friendUserViewModel = CreateFriendUserViewModel(friends, (int)id);
 
@@ -96,18 +94,19 @@ namespace DatingApp.Controllers
                 Description = user.Description,
                 Picture = user.Picture,
                 Email = user.Email,
+                AccountHidden = user.AccountHidden,
                 Posts = postUserViewModel,
                 Friends = friendUserViewModel
             };
             return View(profileViewModel);
         }
 
-        public FriendUserViewModel CreateFriendUserViewModel(List<Friend> friends, int personId)
+        public FriendUserViewModel CreateFriendUserViewModel(List<FriendRequest> friends, int personId)
         {
             IEnumerable<FriendViewModel> friendsViewModel = friends.Select((p) => new FriendViewModel()
             {
-                FirstPerson = p.FirstPerson,
-                SecondPerson = p.SecondPerson
+                FirstPerson = p.Sender,
+                SecondPerson = p.Receiver
             });
 
             FriendUserViewModel friendUserViewModel = new FriendUserViewModel
@@ -117,23 +116,17 @@ namespace DatingApp.Controllers
             };
             return friendUserViewModel;
         }
-        [HttpPost]
-        public void UpdateProfile(Person person)
-        {
 
-
-            var hej = person.FirstName;
-            var ye = person;
-            var bla ="";
-            //if (ModelState.IsValid)
-            //{
-            //    if (person.PersonId == 0)
-            //    {
-            //        NotFound();
-            //    }
-            //    _context.Update(person);
-            //    _context.SaveChanges();
-            //}
-        }
+        //public ActionResult RemoveFriend(int friendToRemove)
+        //{
+        //    int currentUser = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
+        //    List<FriendRequest> friends = requestRepository.GetFriendsByPersonId(int currentUser);
+        //    foreach (FriendRequest friend in friends)
+        //    {
+        //        if (friend.ReceiverId.Equals(currentUser) && friend.SenderId.Equals(friendToRemove) || friend.ReceiverId.Equals(friendToRemove) && friend.SenderId.Equals(currentUser)) {
+        //            requestRepository
+        //        }
+        //    }
+        //}
     }
 }

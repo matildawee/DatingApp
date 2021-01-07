@@ -41,5 +41,9 @@ namespace DataLayer.Repositories
             Person person = items.FirstOrDefault(p => p.PersonId == id);
             return person;
         }
+        public byte[] GetPictureById(int id)
+        {
+            return items.FirstOrDefault(p => p.PersonId.Equals(id)).Picture;
+        }
     }
 }

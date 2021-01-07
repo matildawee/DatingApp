@@ -10,20 +10,39 @@ namespace DataLayer.Repositories
     {
         public FriendRequestRepository(DatingAppContext context) : base(context) { }
 
-        public FriendRequest GetFriendRequestById(int id)
+        public List<FriendRequest> GetFriendsByPersonId(int id)
         {
-            return items.FirstOrDefault((r) => r.FriendRequestId == id);
+            return items.Where((p) => p.SenderId.Equals(id) || p.ReceiverId.Equals(id) && p.Accepted.Equals(true)).ToList();
         }
+
+        public bool IsFriends( int loggedInUser, int id)
+        {
+            List<FriendRequest> requests = items.Where((r) => r.SenderId.Equals(loggedInUser) && r.ReceiverId.Equals(id) && r.Accepted.Equals(true)).ToList();
+            List<FriendRequest> requests2 = items.Where((r) => r.SenderId.Equals(id) && r.ReceiverId.Equals(loggedInUser) && r.Accepted.Equals(true)).ToList();
+            if (requests.Count > 0 || requests2.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
         public List<FriendRequest> GetAllRequestsSentToUser(int id)
         {
-            return items.Where((r) => r.ReceiverId.Equals(id)).ToList();
+            return items.Where((r) => r.ReceiverId.Equals(id) && r.Accepted.Equals(false)).ToList();
         }
 
-        public void DeleteRequest(int id)
+        public List<FriendRequest> GetAllRequestsSentByUser(int id)
         {
-            FriendRequest requestToDelete = GetFriendRequestById(id);
-            items.Remove(requestToDelete);
+            return items.Where((r) => r.SenderId.Equals(id) && r.Accepted.Equals(false)).ToList();
+        }
+
+        public void DeleteRequest(FriendRequest request)
+        {
+            items.Remove(request);
             SaveChanges();
         }
 
@@ -33,9 +52,9 @@ namespace DataLayer.Repositories
             SaveChanges();
         }
 
-        public bool FrienRequestOutgoing(int currentUser, int id)
+        public bool FriendRequestOutgoing(int currentUser, int id)
         {
-            List<FriendRequest> requests = items.Where((r) => r.SenderId == currentUser && r.ReceiverId == id).ToList();
+            List<FriendRequest> requests = items.Where((r) => r.SenderId == currentUser && r.ReceiverId == id && r.Accepted.Equals(false)).ToList();
             if (requests.Count >= 1)
             {
                 return true;
@@ -45,9 +64,9 @@ namespace DataLayer.Repositories
             }
         }
 
-        public bool FrienRequestIncoming(int currentUser, int id)
+        public bool FriendRequestIncoming(int currentUser, int id)
         {
-            List<FriendRequest> requests = items.Where((r) => r.ReceiverId == currentUser && r.SenderId == id).ToList();
+            List<FriendRequest> requests = items.Where((r) => r.ReceiverId == currentUser && r.SenderId == id && r.Accepted.Equals(false)).ToList();
             if (requests.Count >= 1)
             {
                 return true;
@@ -57,5 +76,12 @@ namespace DataLayer.Repositories
                 return false;
             }
         }
+
+        //public void AcceptRequest(FriendRequest friend)
+        //{
+        //   // items.Where((r) => r == friend).ToList().ForEach(f => f.Accepted = true);
+        //    friend.Accepted = true;
+        //    SaveChanges();
+        //}
     }
 }

@@ -12,7 +12,7 @@ namespace DataLayer.Repositories
     //    T Id { get; set; }
     //}
 
-    public abstract class Repository<TValue> where TValue : class
+    public abstract class Repository<TValue>  where TValue : class
     {
         private readonly DatingAppContext context;
 
@@ -27,6 +27,6 @@ namespace DataLayer.Repositories
         {
             context.SaveChanges();
         }
-
+        
     }
 }

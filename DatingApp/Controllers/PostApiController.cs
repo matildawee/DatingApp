@@ -50,5 +50,21 @@ namespace DatingApp.Controllers
                 _context.SaveChanges();
             }
         }
+
+        [HttpPost]
+        [Route("updateprofile")]
+        public void UpdateProfile(Person person)
+        {
+            //var hej = person.AccountHidden;
+            if (ModelState.IsValid)
+            {
+                person.Email = User.Identity.Name;
+                person.PersonId = personRepository.GetIdByUserIdentityEmail((string)person.Email);
+                person.Picture = personRepository.GetPictureById(person.PersonId);
+            }
+            //_context.Edit(person);
+            //_context.Update(person);
+            _context.SaveChanges();
+        }
     }
 }

@@ -14,9 +14,11 @@ namespace DatingApp.Models
 
         public string Description { get; set; }
 
-        public string Picture { get; set; }
+        public byte[] Picture { get; set; }
 
         public string Email { get; set; }
+
+        public bool AccountHidden { get; set; }
 
         public PostUserViewModel Posts { get; set; }
         public FriendUserViewModel Friends { get; set; }
