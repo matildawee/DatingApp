@@ -10,11 +10,6 @@ namespace DataLayer.Repositories
     {
         public PersonRepository(DatingAppContext context) : base(context) { }
 
-        //public Person GetPersonById(int Id)
-        //{
-        //    return items.Find(Id);
-        //}
-
         public List<Person> GetAllPersons()
         {
             return items.ToList();
@@ -27,7 +22,7 @@ namespace DataLayer.Repositories
 
         public List<Person> SearchResultByName(string name)
         {
-            return items.Where((p) => p.FirstName.Contains(name) || p.LastName.Contains(name)).ToList();
+            return items.Where((p) => p.FirstName.Contains(name) && p.AccountHidden.Equals(false) || p.LastName.Contains(name) && p.AccountHidden.Equals(false)).ToList();
         }
 
         public int GetIdByUserIdentityEmail(string email)

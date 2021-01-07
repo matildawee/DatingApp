@@ -7,11 +7,6 @@ using System.Text;
 
 namespace DataLayer.Repositories
 {
-    //public interface IIdentifiable<T>
-    //{
-    //    T Id { get; set; }
-    //}
-
     public abstract class Repository<TValue>  where TValue : class
     {
         private readonly DatingAppContext context;
@@ -27,6 +22,9 @@ namespace DataLayer.Repositories
         {
             context.SaveChanges();
         }
-        
+        public void Edit(TValue item)
+        {
+            context.Set<TValue>().Update(item);
+        }
     }
 }

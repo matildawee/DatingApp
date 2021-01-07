@@ -146,22 +146,22 @@ $(document).ready(function () {
     //else {
     //    $("#friendStatus").text("nehee");
     //}
-    testing();
+    //testing();
 });
 
-function testing() {
-    $.ajax({
-        type: "POST",
-        url: "/Request/GetFriendStatus/",
-        dataType: "JSON",
-        success: function (data) {
-            var result = data.text;
-            //$("#friendStatus").text(result);
-            alert(result);
-        },
-        error: function (data) {
-            var r = data.text;
-            alert("Error: " + r);
-        }
-    });
-}
+//function testing() {
+//    $.ajax({
+//        type: "POST",
+//        url: "/Request/GetFriendStatus/",
+//        dataType: "JSON",
+//        success: function (data) {
+//            var result = data.text;
+//            //$("#friendStatus").text(result);
+//            alert(result);
+//        },
+//        error: function (data) {
+//            var r = data.text;
+//            alert("Error: " + r);
+//        }
+//    });
+//}

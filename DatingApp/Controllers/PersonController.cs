@@ -2,6 +2,7 @@
 using DataLayer.Models;
 using DataLayer.Repositories;
 using DatingApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
@@ -117,16 +118,30 @@ namespace DatingApp.Controllers
             return friendUserViewModel;
         }
 
-        //public ActionResult RemoveFriend(int friendToRemove)
-        //{
-        //    int currentUser = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
-        //    List<FriendRequest> friends = requestRepository.GetFriendsByPersonId(int currentUser);
-        //    foreach (FriendRequest friend in friends)
-        //    {
-        //        if (friend.ReceiverId.Equals(currentUser) && friend.SenderId.Equals(friendToRemove) || friend.ReceiverId.Equals(friendToRemove) && friend.SenderId.Equals(currentUser)) {
-        //            requestRepository
-        //        }
-        //    }
-        //}
+        public ActionResult RemoveFriend(int friendToRemove)
+        {
+            int currentUser = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
+            List<FriendRequest> friends = requestRepository.GetFriendsByPersonId(currentUser);
+            foreach (FriendRequest f in friends)
+            {
+                if (f.ReceiverId.Equals(currentUser) && f.SenderId.Equals(friendToRemove) || f.ReceiverId.Equals(friendToRemove) && f.SenderId.Equals(currentUser))
+                {
+                    requestRepository.DeleteFriendOrRequest(f);
+                    return Json(new { Result = true });
+                }
+            }
+            return Json(new { Result = false });
+        }
+
+        [AllowAnonymous]
+        public FileContentResult RenderProfileImage(int userId)
+        {
+            byte[] image = personRepository.GetPictureById(userId);
+            if(image != null)
+            {
+                return new FileContentResult(image, "image/jpeg");
+            }
+            return null;
+        }
     }
 }

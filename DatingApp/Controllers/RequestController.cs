@@ -87,7 +87,7 @@ namespace DatingApp.Controllers
             {
                 if (fr.SenderId.Equals(senderId) && fr.ReceiverId.Equals(receiverId))
                 {
-                    requestRepository.DeleteRequest(fr);
+                    requestRepository.DeleteFriendOrRequest(fr);
                     return Json(new { Result = true });
                 }
             }
@@ -118,7 +118,7 @@ namespace DatingApp.Controllers
                 {
                     if (r.ReceiverId == receiverId && r.SenderId == senderId)
                     {
-                        requestRepository.DeleteRequest(r);
+                        requestRepository.DeleteFriendOrRequest(r);
                         return Json(new { result = true });
                     }
                 }

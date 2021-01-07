@@ -29,7 +29,6 @@ namespace DataLayer.Repositories
             }
         }
 
-
         public List<FriendRequest> GetAllRequestsSentToUser(int id)
         {
             return items.Where((r) => r.ReceiverId.Equals(id) && r.Accepted.Equals(false)).ToList();
@@ -40,7 +39,7 @@ namespace DataLayer.Repositories
             return items.Where((r) => r.SenderId.Equals(id) && r.Accepted.Equals(false)).ToList();
         }
 
-        public void DeleteRequest(FriendRequest request)
+        public void DeleteFriendOrRequest(FriendRequest request)
         {
             items.Remove(request);
             SaveChanges();
