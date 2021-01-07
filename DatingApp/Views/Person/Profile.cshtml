@@ -17,11 +17,11 @@
         <p>@Model.Description</p>
 
     </div>
-    <div class="col-lg-5" id="PostWallDiv">
+    <div class="col-lg-5" id="PostWall">
         @Html.Partial("/Views/Post/_Post.cshtml", Model.Posts)
         <hr />
     </div>
-    <div class="col-lg-5" id="PostWallDiv">
+    <div class="col-lg-5" id="FriendWall">
         @Html.Partial("_Friend.cshtml", Model.Friends)
         <hr />
     </div>

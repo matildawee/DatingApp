@@ -5,16 +5,16 @@ function UpdateProfile() {
     var firstname = $("#firstName").val();
     var lastname = $("#lastName").val();
     var description = $("#description").val();
-    var person;
-    person = { FirstName: firstname, LastName: lastname, Description: description };
-    
-    var hej;
+    var post;
+    post = { FirstName: firstname, LastName: lastname, Description: description };
     $.ajax({
+        contentType: "application/json;charset=UTF-8",
+        //dataType: 'json',
         type: "POST",
         url: "/Person/UpdateProfile",
-        data: JSON.stringify(person),
-        //dataType: 'json',
-        contentType: "application/json;charset=UTF-8",
+        data: JSON.stringify(post),
+        //cache: false,
+        
         success: function (data) {
             location.reload(true);
         },

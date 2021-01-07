@@ -78,7 +78,7 @@ namespace DatingApp.Controllers
             };
             return postUserViewModel;
         }
-        public async Task<IActionResult> MyProfile()
+        public IActionResult MyProfile()
         {
             string email = User.Identity.Name;
             int id = personRepository.GetIdByUserIdentityEmail((string)email);
@@ -117,12 +117,6 @@ namespace DatingApp.Controllers
             };
             return friendUserViewModel;
         }
-
-        public IActionResult Post()
-        {
-            return View();
-        }
-
         [HttpPost]
         public void UpdateProfile(Person person)
         {
