@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -9,12 +10,14 @@ using DataLayer;
 using DataLayer.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DatingApp.Areas.Identity.Pages.Account
 {
@@ -26,6 +29,7 @@ namespace DatingApp.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly DatingAppContext _context;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
 
         public RegisterModel(
@@ -33,13 +37,15 @@ namespace DatingApp.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            DatingAppContext context)
+            DatingAppContext context,
+            IWebHostEnvironment hostEnvironment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
             _context = context;
+            _hostEnvironment = hostEnvironment;
         }
 
         [BindProperty]
@@ -69,11 +75,13 @@ namespace DatingApp.Areas.Identity.Pages.Account
         }
         public class InputModelDetails
         {
-            [Required]
+            [Required(ErrorMessage = "Enter first name with uppercase first letter")]
+            [RegularExpression(@"^[A-Z]+[a-zA-Z]*$")]
             [Display(Name = "First name")]
             public string FirstName { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Enter first name with uppercase first letter")]
+            [RegularExpression(@"^[A-Z]+[a-zA-Z]*$")]
             [Display(Name = "Last name")]
             public string LastName { get; set; }
         }
@@ -90,9 +98,19 @@ namespace DatingApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email, EmailConfirmed = true};
+                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email, EmailConfirmed = true };
                 var result = await _userManager.CreateAsync(user, Input.Password);
-                
+
+                byte[] imageData = null;
+                string wwwrootPath = _hostEnvironment.WebRootPath;
+                string path = wwwrootPath + "/img/default_profile_picture.jpg";
+
+                FileStream file = new FileStream(path, FileMode.Open);
+
+                using (var binary = new BinaryReader(file))
+                {
+                    imageData = binary.ReadBytes((int)file.Length);
+                }
                 if (result.Succeeded)
                 {
                     string firstname = Request.Form["firstName"];
@@ -103,7 +121,8 @@ namespace DatingApp.Areas.Identity.Pages.Account
                         FirstName = firstname,
                         LastName = lastname,
                         Description = "",
-                        Picture = "~/img/default_profile_picture.jfif"
+                        Picture = imageData,
+                        AccountHidden = false
                     };
                     _context.Persons.Add(person);
                     _context.SaveChanges();

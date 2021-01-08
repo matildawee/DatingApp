@@ -5,6 +5,7 @@ using DatingApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using System;
 using System.Collections.Generic;
@@ -19,12 +20,10 @@ namespace DatingApp.Controllers
     {
         private readonly DatingAppContext _context;
         private PersonRepository personRepository;
-        private PostRepository postRepository;
         public PostApiController(DatingAppContext context)
         {
             _context = context;
             personRepository = new PersonRepository(context);
-            postRepository = new PostRepository(context);
         }
 
         [HttpPost]

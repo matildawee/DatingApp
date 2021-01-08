@@ -47,11 +47,11 @@ namespace DatingApp.Controllers
             List<Person> profiles = new List<Person>();
             if (User.Identity.IsAuthenticated)
             {
-                profiles = personRepository.GetAllProfilesExceptCurrent(User.Identity.Name);
+                profiles = personRepository.GetAllVisibleProfilesExceptCurrent(User.Identity.Name);
             }
             else
             {
-                profiles = personRepository.GetAllPersons();
+                profiles = personRepository.GetAllVisiblePersons();
             }
 
             List<Person> randomProfiles = new List<Person>();

@@ -11,33 +11,51 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <h1>My Profile</h1>
-
+    <h1 class="myprofile">My Profile</h1>
+    <br />
     <div>
+        <div class="myprofile">
+            <img width="200" height="200" src="@Url.Action("LoadPicture", "Person", new { id = @Model.PersonId })" />
+        </div>
+        <br />
+        <form class="text-center" asp-action="UploadImage"
+              asp-controller="Person"
+              method="post"
+              enctype="multipart/form-data">
+            <input type="file" id="file1"
+                   name="file1"
+                   multiple="multiple" />
+            <button type="submit">Upload File</button>
+        </form>
 
-        @*<img width="200" height="200" src="@Url.Action("RenderProfileImage", "Person", new { userId = @Model.PersonId })" />*@
-        @*<h4>@Model.FirstName @Model.LastName</h4>*@
+        @*<div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            Your profile has been updated.
+        </div>*@
 
-        @*<h4>@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h4>*@
-        <form id="myProfile">
+        <form asp-action="UpdateProfile" class="myprofile" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input id="personId" type="hidden" asp-for="PersonId" />
-            <input id="email" type="hidden" asp-for="Email" />
-            <input id="picture" type="hidden" asp-for="Picture" />
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
-                <input id="firstName" asp-for="FirstName" class="form-control" />
+                <input asp-for="FirstName" class="form-control" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
-                <input id="lastName" asp-for="LastName" class="form-control" />
+                <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input id="description" asp-for="Description" class="form-control" />
+                <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="hideAccount">
+                    Hide account from other users
+                    <input asp-for="AccountHidden" type="checkbox">
+                    <span class="hideAccountCheckmark"></span>
+                </label>
             </div>
 
             <div class="form-group">
@@ -45,18 +63,20 @@
             </div>
         </form>
 
-        <ul class="nav">
-            <li class="nav-item"><a class="nav-link" id="email" href="/Identity/Account/Manage/Email">Manage your account</a></li>
+        <ul class="nav myprofile">
+            <li class="nav-item"><a class="nav-link" id="password" href="/Identity/Account/Manage/ChangePassword">Manage password</a></li>
         </ul>
     </div>
 
-    <div class="col-lg-5" id="PostWall">
-        @Html.Partial("/Views/Post/_Post.cshtml", Model.Posts)
-        <hr />
-    </div>
-    <div class="col-lg-5" id="FriendWall">
-        @Html.Partial("_Friend.cshtml", Model.Friends)
-        <hr />
+    <div class="profileWall">
+        <div class="col-lg-5" id="PostWall">
+            @Html.Partial("/Views/Post/_Post.cshtml", Model.Posts)
+            <hr />
+        </div>
+        <div class="col-lg-5" id="FriendWall">
+            @Html.Partial("_Friend.cshtml", Model.Friends)
+            <hr />
+        </div>
     </div>
 
 }

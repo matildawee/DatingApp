@@ -2,78 +2,152 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
 }
 
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+    color: #0366d6;
+}
+#PostWall{
+    
+}
+#FriendWall{
+    
+}
+.profileWall{
+    display: flex;
 }
 
-.postClass {
+.hideAccount {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.hideAccount input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+.hideAccountCheckmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+}
+.hideAccount:hover input ~ .hideAccountCheckmark {
+    background-color: #ccc;
+}
+.hideAccount input:checked ~ .hideAccountCheckmark {
+    background-color: #2196F3;
+}
+.hideAccountCheckmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+.hideAccount input:checked ~ .hideAccountCheckmark:after {
+    display: block;
+}
+.hideAccount .hideAccountCheckmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.post {
     color: black;
-    background-color: #d4e9ff;
-    border-color: black;
+    background-color: #dbdbdb;
+}
+
+.newpost {
+    color: black;
+    background-color: #f5f5f5;
+}
+
+.myprofile {
+    width: 50%;
+    margin: 0 25%;
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
+
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .border-top {
-  border-top: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
 }
+
 .border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
 button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+    font-size: 1rem;
+    line-height: inherit;
 }
 
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
 }
+
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
 }
 
 div.exempel {
@@ -91,19 +165,19 @@ div.exempel {
     margin-bottom: 3%;
 }
 
-/* style icon and align icon*/
-.search-button .fas {
-    position: absolute;
-    padding: 10px;
-    pointer-events: none;
-    left: 0px;
-    color: gray;
-}
+    /* style icon and align icon*/
+    .search-button .fas {
+        position: absolute;
+        padding: 10px;
+        pointer-events: none;
+        left: 0px;
+        color: gray;
+    }
 
-/* add padding  */
-.search-button input {
-    padding-left: 30px;
-}
+    /* add padding  */
+    .search-button input {
+        padding-left: 30px;
+    }
 
 /*Style sad-face icon*/
 .fa-frown {
@@ -130,13 +204,13 @@ div.exempel {
     cursor: pointer;
 }
 
-/*Styling and positioning the notification for number of friend requests*/
-#showRequests #requestQty {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    padding: 4px 9px;
-    border-radius: 50%;
-    background: red;
-    color: white;
- }
+    /*Styling and positioning the notification for number of friend requests*/
+    #showRequests #requestQty {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        padding: 4px 9px;
+        border-radius: 50%;
+        background: red;
+        color: white;
+    }

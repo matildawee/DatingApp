@@ -10,24 +10,19 @@ namespace DataLayer.Repositories
     {
         public PersonRepository(DatingAppContext context) : base(context) { }
 
-        //public Person GetPersonById(int Id)
-        //{
-        //    return items.Find(Id);
-        //}
-
-        public List<Person> GetAllPersons()
+        public List<Person> GetAllVisiblePersons()
         {
-            return items.ToList();
+            return items.Where((p) => p.AccountHidden.Equals(false)).ToList();
         }
         
-        public List<Person> GetAllProfilesExceptCurrent(string mail)
+        public List<Person> GetAllVisibleProfilesExceptCurrent(string mail)
         {
-            return items.Where((p) => !p.Email.Equals(mail)).ToList();
+            return items.Where((p) => !p.Email.Equals(mail) && p.AccountHidden.Equals(false)).ToList();
         }
 
         public List<Person> SearchResultByName(string name)
         {
-            return items.Where((p) => p.FirstName.Contains(name) || p.LastName.Contains(name)).ToList();
+            return items.Where((p) => p.FirstName.Contains(name) && p.AccountHidden.Equals(false) || p.LastName.Contains(name) && p.AccountHidden.Equals(false)).ToList();
         }
 
         public int GetIdByUserIdentityEmail(string email)
@@ -40,6 +35,10 @@ namespace DataLayer.Repositories
         {
             Person person = items.FirstOrDefault(p => p.PersonId == id);
             return person;
+        }
+        public byte[] GetPictureById(int id)
+        {
+            return items.FirstOrDefault(p => p.PersonId.Equals(id)).Picture;
         }
     }
 }

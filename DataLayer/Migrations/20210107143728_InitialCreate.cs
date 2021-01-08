@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataLayer.Migrations
 {
-    public partial class hejmigration : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,9 +15,10 @@ namespace DataLayer.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    Picture = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    Picture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    AccountHidden = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -25,46 +26,19 @@ namespace DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Friend",
-                columns: table => new
-                {
-                    FirstPersonId = table.Column<int>(type: "int", nullable: false),
-                    SecondPersonId = table.Column<int>(type: "int", nullable: false),
-                    Category = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Friend", x => new { x.FirstPersonId, x.SecondPersonId });
-                    table.ForeignKey(
-                        name: "FK_Friend_Person_FirstPersonId",
-                        column: x => x.FirstPersonId,
-                        principalTable: "Person",
-                        principalColumn: "PersonId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Friend_Person_SecondPersonId",
-                        column: x => x.SecondPersonId,
-                        principalTable: "Person",
-                        principalColumn: "PersonId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "FriendRequest",
                 columns: table => new
                 {
-                    FriendRequestId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     SenderId = table.Column<int>(type: "int", nullable: false),
                     ReceiverId = table.Column<int>(type: "int", nullable: false),
-                    RecevierPersonId = table.Column<int>(type: "int", nullable: true)
+                    Accepted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FriendRequest", x => x.FriendRequestId);
+                    table.PrimaryKey("PK_FriendRequest", x => new { x.SenderId, x.ReceiverId });
                     table.ForeignKey(
-                        name: "FK_FriendRequest_Person_RecevierPersonId",
-                        column: x => x.RecevierPersonId,
+                        name: "FK_FriendRequest_Person_ReceiverId",
+                        column: x => x.ReceiverId,
                         principalTable: "Person",
                         principalColumn: "PersonId",
                         onDelete: ReferentialAction.Restrict);
@@ -85,7 +59,7 @@ namespace DataLayer.Migrations
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PersonId = table.Column<int>(type: "int", nullable: false),
                     AuthorId = table.Column<int>(type: "int", nullable: false),
-                    PostText = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true)
+                    PostText = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -105,19 +79,9 @@ namespace DataLayer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friend_SecondPersonId",
-                table: "Friend",
-                column: "SecondPersonId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FriendRequest_RecevierPersonId",
+                name: "IX_FriendRequest_ReceiverId",
                 table: "FriendRequest",
-                column: "RecevierPersonId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_FriendRequest_SenderId",
-                table: "FriendRequest",
-                column: "SenderId");
+                column: "ReceiverId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Post_AuthorId",
@@ -132,9 +96,6 @@ namespace DataLayer.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Friend");
-
             migrationBuilder.DropTable(
                 name: "FriendRequest");
 

@@ -14,8 +14,8 @@ $(document).ready(function () {
     }
 });
 
-$("#popupRequests").on("click", "#AcceptBtn", AcceptRequest);
-$("#popupRequests").on("click", "#DeclineBtn", DeclineRequest);
+//$("#popupRequests").on("click", "#AcceptBtn", AcceptRequest);
+//$("#popupRequests").on("click", "#DeclineBtn", DeclineRequest);
 
 var ref = $('#showRequests');
 var popup = $('#popupRequests');
@@ -78,90 +78,94 @@ function SetNumberOfRequests() {
             }
         },
         error: () => {
-            alert("Error: Unable to fetch and display number of friend requests");
+          //  alert("Error: Unable to fetch and display number of friend requests");
+            console.log("Error: Unable to fetch and display number of friend requests");
         }
     });
 }
 
-function AcceptRequest() {
-    var UserId = this.attributes[1].value;
-    $.ajax({
-        type: "POST",
-        url: "/Request/AcceptRequest/" + UserId,
-        dataType: "JSON",
-        success: () => {
-            Update_Content();
-            SetNumberOfRequests();
-            //var currentUrl = window.location.href;
-            //var urlArray = currentUrl.split("/Profile/Index/");
-            //if (urlArray.length > 1) {
-            //    if (urlArray[1] == UserId) {
-            //        ButtonGroupFriends();
-            //    }
-            //    Update_Friends();
-            //}
-            //if ($("#NotificationNumberSpan").val() == 0) {
-            //    ToggleNotificationPopUpDivDisplay();
-            //}
-        },
-        error: () => {
-            alert("Error: Unable to accept friend request.");
-        }
-    });
-}
+//function AcceptRequest() {
+//    var id = this.attributes[1].value;
+//    var hej = "";
+//    $.ajax({
+//        type: "POST",
+//        url: "/Request/AcceptRequest/" + id,
+//        //dataType: "JSON",
+//        data : "id=" + id,
+//        success: () => {
+//            Update_Content();
+//            SetNumberOfRequests();
+//            //var currentUrl = window.location.href;
+//            //var urlArray = currentUrl.split("/Profile/Index/");
+//            //if (urlArray.length > 1) {
+//            //    if (urlArray[1] == UserId) {
+//            //        ButtonGroupFriends();
+//            //    }
+//            //    Update_Friends();
+//            //}
+//            //if ($("#NotificationNumberSpan").val() == 0) {
+//            //    ToggleNotificationPopUpDivDisplay();
+//            //}
+//        },
+//        error: () => {
+//            alert("Error: Unable to accept friend request.");
+//        }
+//    });
+//}
 
-function DeclineRequest() {
-    var UserId = this.attributes[1].value;
-    $.ajax({
-        type: "POST",
-        url: "/Request/DeclineRequest/" + UserId,
-        dataType: "JSON",
-        success: () => {
-            Update_Content();
-            SetNumberOfRequests();
+//function DeclineRequest() {
+//    var id = this.attributes[1].value;
+//    $.ajax({
+//        type: "POST",
+//        url: "/Request/DeclineRequest/",
+//        //dataType: "JSON",
+//        data: id,
+//        success: () => {
+//            Update_Content();
+//            SetNumberOfRequests();
 
-            //var currentUrl = window.location.href;
-            //var urlArray = currentUrl.split("/Profile/Index/");
-            //if (urlArray.length > 1) {
-            //    if (urlArray[1] == UserId) {
-            //        ButtonGroupNotFriends();
-            //    }
-            //}
+//            //var currentUrl = window.location.href;
+//            //var urlArray = currentUrl.split("/Profile/Index/");
+//            //if (urlArray.length > 1) {
+//            //    if (urlArray[1] == UserId) {
+//            //        ButtonGroupNotFriends();
+//            //    }
+//            //}
 
-            //if ($("#NotificationNumberSpan").val() == 0) {
-            //    ToggleNotificationPopUpDivDisplay();
-            //}
-        },
-        error: () => {
-            alert("Error: Unable to decline friend request.");
-        }
-    });
-}
+//            //if ($("#NotificationNumberSpan").val() == 0) {
+//            //    ToggleNotificationPopUpDivDisplay();
+//            //}
+//        },
+//        error: () => {
+//            alert("Error: Unable to decline friend request.");
+//        }
+//    });
+//}
 
-$(document).ready(function () {
-    //var d = new Date();
-    //if (d.getMonth() == 5) {
-    //    $("#friendStatus").text("tjoho");
-    //}
-    //else {
-    //    $("#friendStatus").text("nehee");
-    //}
-    testing();
-});
+//$(document).ready(function () {
+//    //var d = new Date();
+//    //if (d.getMonth() == 5) {
+//    //    $("#friendStatus").text("tjoho");
+//    //}
+//    //else {
+//    //    $("#friendStatus").text("nehee");
+//    //}
+//    //testing();
+//});
 
-function testing() {
-    $.ajax({
-        type: "POST",
-        url: "/Request/GetFriendStatus/",
-        dataType: "JSON",
-        success: function (data) {
-            var result = data.text;
-            //$("#friendStatus").text(result);
-            alert(result);
-        },
-        error: function (data) {
-            var r = data.text;
-            alert("Error: " + r);
-        }
-    });
-}
+//function testing() {
+//    $.ajax({
+//        type: "POST",
+//        url: "/Request/GetFriendStatus/",
+//        dataType: "JSON",
+//        success: function (data) {
+//            var result = data.text;
+//            //$("#friendStatus").text(result);
+//            alert(result);
+//        },
+//        error: function (data) {
+//            var r = data.text;
+//            alert("Error: " + r);
+//        }
+//    });
+//}

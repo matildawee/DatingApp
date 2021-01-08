@@ -9,23 +9,37 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <h1>Friends</h1>
-
-    @foreach (var item in Model.Friends)
+    <h2>Friends</h2>
+    if (Model != null)
     {
-        @*<h4>@item.Friends.SecondPerson.FirstName</h4>*@
-
-
-
-@*if (@item.SecondPerson.PersonId == Model.PersonId)
+        @foreach (var item in Model.Friends)
         {
-            <h4>@item.FirstPerson.FirstName</h4>
+            <div class="card post mb-3">
+                <div class="card-header">
+                    <div class="media">
+                        @if (@item.SecondPerson.PersonId == Model.PersonId)
+                        {
+                            <a href="@Url.Action("Profile", "Person", new { id = item.FirstPerson.PersonId })" class="card-link">
+                                <img class="mr-1" src="@Url.Action("LoadPicture", "Person", new { id = item.FirstPerson.PersonId })" height="32" width="32" />
+                                <span class="badge badge-light">@item.FirstPerson.FirstName @item.FirstPerson.LastName</span>
+                            </a>
+                        }
+                        @if (item.FirstPerson.PersonId == Model.PersonId)
+                        {
+                            <a href="@Url.Action("Profile", "Person", new { id = item.SecondPerson.PersonId })" class="card-link">
+                                <img class="mr-1" src="@Url.Action("LoadPicture", "Person", new { id = item.SecondPerson.PersonId })" height="32" width="32" />
+                                <span class="badge badge-light">@item.SecondPerson.FirstName @item.SecondPerson.LastName</span>
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
         }
-        if (item.FirstPerson.PersonId == Model.PersonId)
-        {
-            <h4>@item.SecondPerson.FirstName</h4>
-        }*@              }
-
+    }
+    else
+    {
+        <h2>Du har inga vänner..</h2>
+    }
 }
 else
 {
