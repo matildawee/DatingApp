@@ -20,14 +20,14 @@
                         @if (@item.SecondPerson.PersonId == Model.PersonId)
                         {
                             <a href="@Url.Action("Profile", "Person", new { id = item.FirstPerson.PersonId })" class="card-link">
-                                <img class="mr-1" src="@Url.Action("LoadPicture", "Profile", new { id = item.FirstPerson.PersonId })" height="32" width="32" />
+                                <img class="mr-1" src="@Url.Action("LoadPicture", "Person", new { id = item.FirstPerson.PersonId })" height="32" width="32" />
                                 <span class="badge badge-light">@item.FirstPerson.FirstName @item.FirstPerson.LastName</span>
                             </a>
                         }
                         @if (item.FirstPerson.PersonId == Model.PersonId)
                         {
                             <a href="@Url.Action("Profile", "Person", new { id = item.SecondPerson.PersonId })" class="card-link">
-                                <img class="mr-1" src="@Url.Action("LoadPicture", "Profile", new { id = item.SecondPerson.PersonId })" height="32" width="32" />
+                                <img class="mr-1" src="@Url.Action("LoadPicture", "Person", new { id = item.SecondPerson.PersonId })" height="32" width="32" />
                                 <span class="badge badge-light">@item.SecondPerson.FirstName @item.SecondPerson.LastName</span>
                             </a>
                         }

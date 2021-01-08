@@ -43,8 +43,8 @@
         @foreach (var item in Model)
         {
             <div class="exempel">
-                <a href=@Url.Action("Index", "Person", new { id = item.PersonId })>
-                    <img width="200" height="200" src="@Url.Action("LoadPicture", "Person", new { userId = item.PersonId })" />
+                <a href=@Url.Action("Profile", "Person", new { id = item.PersonId })>
+                    <img width="200" height="200" src="@Url.Action("LoadPicture", "Person", new { id = item.PersonId })" />
                 </a>
                 <a class="nameLink" href="@Url.Action("Profile", "Person", new { id = item.PersonId })">
                     <h4 class="card-title">@item.FirstName @item.LastName</h4>
@@ -62,7 +62,7 @@ else
         {
             <div class="exempel">
                 <a asp-area="Identity" asp-page="/Account/Login" )>
-                    <img width="200" height="200" src="@Url.Action("LoadPicture", "Person", new { userId = item.PersonId })" />
+                    <img width="200" height="200" src="@Url.Action("LoadPicture", "Person", new { id = item.PersonId })" />
                 </a>
                 <a class="nameLink" asp-area="Identity" asp-page="/Account/Login">
                     <h4 class="card-title">@item.FirstName @item.LastName</h4>

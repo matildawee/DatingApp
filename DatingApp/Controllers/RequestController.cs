@@ -36,6 +36,7 @@ namespace DatingApp.Controllers
                 IEnumerable<RequestViewModel> model = requests.Select((r) => new RequestViewModel()
                 {
                     SenderId = r.SenderId,
+                    Sender = personRepository.GetPersonById(r.SenderId),
                     FullName = r.Sender.FirstName + " " + r.Sender.LastName
                 });
                 return PartialView("_Requests", model);
@@ -54,7 +55,6 @@ namespace DatingApp.Controllers
             return Json(new {data = requests.Count });
         }
 
-        [HttpPost]
         public ActionResult AcceptRequest(int senderId)
         {
             int receiverId = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
@@ -65,19 +65,14 @@ namespace DatingApp.Controllers
             {
                 if(fr.SenderId == senderId && fr.ReceiverId == receiverId)
                 {
-                    //requestRepository.AcceptRequest(fr);
-
                     fr.Accepted = true;
                     _context.Update(fr);
                     _context.SaveChanges();
-
-                    return Json(new { Result = true });
                 }
             }
-            return Json(new { Result = false });
-        }
-
-        [HttpPost]
+            return RedirectToAction("Profile", "Person", new { id = senderId });
+        }   
+        
         public ActionResult DeclineRequest(int senderId)
         {
             int receiverId = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
@@ -88,26 +83,26 @@ namespace DatingApp.Controllers
                 if (fr.SenderId.Equals(senderId) && fr.ReceiverId.Equals(receiverId))
                 {
                     requestRepository.DeleteFriendOrRequest(fr);
-                    return Json(new { Result = true });
                 }
             }
-            return Json(new { Result = false });
+            return RedirectToAction("Profile", "Person", new { id = senderId });
         }
 
-        [HttpPost]
         public ActionResult SendRequest(int receiverId)
         {
             int senderId = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
-                requestRepository.AddRequest(new FriendRequest
-                {
-                    SenderId = senderId,
-                    ReceiverId = receiverId,
-                    Accepted = false
-                });
-                return Json(new { result = true });
+            FriendRequest friendRequest = new FriendRequest
+            {
+                Sender = personRepository.GetPersonById(senderId),
+                SenderId = senderId,
+                Receiver = personRepository.GetPersonById(receiverId),
+                ReceiverId = receiverId,
+                Accepted = false
+            };
+            requestRepository.AddRequest(friendRequest);
+            return RedirectToAction("Profile", "Person", new { id = receiverId });
         }
-        
-        [HttpPost]
+
         public ActionResult CancelRequest(int receiverId)
         {
             int senderId = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
@@ -119,11 +114,11 @@ namespace DatingApp.Controllers
                     if (r.ReceiverId == receiverId && r.SenderId == senderId)
                     {
                         requestRepository.DeleteFriendOrRequest(r);
-                        return Json(new { result = true });
                     }
                 }
             }
-            return Json(new { result = false });
+            var hej = receiverId;
+            return RedirectToAction("Profile", "Person", new { id = receiverId });
         }
     }
 }

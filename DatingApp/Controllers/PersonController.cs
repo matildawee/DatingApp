@@ -3,11 +3,15 @@ using DataLayer.Models;
 using DataLayer.Repositories;
 using DatingApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -128,17 +132,17 @@ namespace DatingApp.Controllers
                 if (f.ReceiverId.Equals(currentUser) && f.SenderId.Equals(friendToRemove) || f.ReceiverId.Equals(friendToRemove) && f.SenderId.Equals(currentUser))
                 {
                     requestRepository.DeleteFriendOrRequest(f);
-                    return Json(new { Result = true });
+                    //return Json(new { Result = true });
                 }
             }
-            return Json(new { Result = false });
+            return RedirectToAction("Profile", "Person", new { id = friendToRemove });
         }
 
         [AllowAnonymous]
-        public FileContentResult LoadPicture(int userId)
+        public FileContentResult LoadPicture(int id)
         {
-            byte[] image = personRepository.GetPictureById(userId);
-            if(image != null)
+            byte[] image = personRepository.GetPictureById(id);
+            if (image != null)
             {
                 return new FileContentResult(image, "image/jpeg");
             }
@@ -180,6 +184,26 @@ namespace DatingApp.Controllers
         private bool UserExists(int id)
         {
             return _context.Persons.Any(e => e.PersonId == id);
+        }
+
+        public IActionResult UploadImage()
+        {
+            foreach (var file in Request.Form.Files)
+            {
+                int currentUser = personRepository.GetIdByUserIdentityEmail((string)User.Identity.Name);
+                Person personToUpdate = personRepository.GetPersonById(currentUser);
+
+                System.IO.MemoryStream ms = new MemoryStream();
+                file.CopyTo(ms);
+                personToUpdate.Picture = ms.ToArray();
+
+                ms.Close();
+                ms.Dispose();
+
+                _context.Update(personToUpdate);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("MyProfile");
         }
     }
 }
