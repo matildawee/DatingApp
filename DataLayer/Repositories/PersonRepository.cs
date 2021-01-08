@@ -10,14 +10,14 @@ namespace DataLayer.Repositories
     {
         public PersonRepository(DatingAppContext context) : base(context) { }
 
-        public List<Person> GetAllPersons()
+        public List<Person> GetAllVisiblePersons()
         {
-            return items.ToList();
+            return items.Where((p) => p.AccountHidden.Equals(false)).ToList();
         }
         
-        public List<Person> GetAllProfilesExceptCurrent(string mail)
+        public List<Person> GetAllVisibleProfilesExceptCurrent(string mail)
         {
-            return items.Where((p) => !p.Email.Equals(mail)).ToList();
+            return items.Where((p) => !p.Email.Equals(mail) && p.AccountHidden.Equals(false)).ToList();
         }
 
         public List<Person> SearchResultByName(string name)

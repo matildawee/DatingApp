@@ -30,7 +30,7 @@
                 <div class="card-header">
                     <div class="media">
                         <a href="@Url.Action("Profile", "Person", new { id = item.Author.PersonId })" class="card-link">
-                            <img class="mr-1" src="@Url.Action("RenderProfileImage", "Profile", new { id = item.Author.PersonId })" height="32" width="32" />
+                            <img class="mr-1" src="@Url.Action("LoadPicture", "Person", new { id = item.Author.PersonId })" height="32" width="32" />
                             <span class="badge badge-light">@item.Author.FirstName @item.Author.LastName</span>
                         </a>
                         @*<div class="media-body">

@@ -77,6 +77,7 @@ namespace DatingApp.Controllers
             };
             return postUserViewModel;
         }
+
         public IActionResult MyProfile()
         {
             string email = User.Identity.Name;
@@ -106,8 +107,8 @@ namespace DatingApp.Controllers
         {
             IEnumerable<FriendViewModel> friendsViewModel = friends.Select((p) => new FriendViewModel()
             {
-                FirstPerson = p.Sender,
-                SecondPerson = p.Receiver
+                FirstPerson = personRepository.GetPersonById(p.SenderId),
+                SecondPerson = personRepository.GetPersonById(p.ReceiverId)
             });
 
             FriendUserViewModel friendUserViewModel = new FriendUserViewModel
@@ -134,7 +135,7 @@ namespace DatingApp.Controllers
         }
 
         [AllowAnonymous]
-        public FileContentResult RenderProfileImage(int userId)
+        public FileContentResult LoadPicture(int userId)
         {
             byte[] image = personRepository.GetPictureById(userId);
             if(image != null)
@@ -142,6 +143,43 @@ namespace DatingApp.Controllers
                 return new FileContentResult(image, "image/jpeg");
             }
             return null;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UpdateProfile(ProfileViewModel profileModel)
+        {
+            int currentUser = personRepository.GetIdByUserIdentityEmail((string)User.Identity.Name);
+            Person personToUpdate = personRepository.GetPersonById(currentUser);
+            personToUpdate.FirstName = profileModel.FirstName;
+            personToUpdate.LastName = profileModel.LastName;
+            personToUpdate.Description = profileModel.Description;
+            personToUpdate.AccountHidden = profileModel.AccountHidden;
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(personToUpdate);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UserExists(personToUpdate.PersonId))
+                    {
+                        //error
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            return RedirectToAction("MyProfile");
+        }
+
+        private bool UserExists(int id)
+        {
+            return _context.Persons.Any(e => e.PersonId == id);
         }
     }
 }

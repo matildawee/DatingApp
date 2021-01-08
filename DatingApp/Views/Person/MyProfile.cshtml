@@ -14,41 +14,43 @@
     <h1 class="myprofile" >My Profile</h1>
     <br />
     <div>
+        <img width="200" height="200" src="@Url.Action("LoadPicture", "Person", new { userId = @Model.PersonId })" />
 
-        <img class="mtprofile" width="200" height="200" src="@Url.Action("RenderProfileImage", "Person", new { userId = @Model.PersonId })" />
+        <form asp-action="UpdateProfile" class="myprofile">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="ProfileImage">
+                    <input asp-for="Picture" type="file" name="ProfileImage" id="fileUpload" accept=".png,.jpg,.jpeg" />
+                    <span class="ProfileImage"></span>
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="hideAccount">
+                    Hide account from other users
+                    <input asp-for="AccountHidden" type="checkbox">
+                    <span class="hideAccountCheckmark"></span>
+                </label>
+            </div>
 
-    <form class="myprofile" id="myProfile">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input id="personId" type="hidden" asp-for="PersonId" />
-        <input id="email" type="hidden" asp-for="Email" />
-        <input id="picture" type="hidden" asp-for="Picture" />
-        <div class="form-group">
-            <label asp-for="FirstName" class="control-label"></label>
-            <input id="firstName" asp-for="FirstName" class="form-control" />
-            <span asp-validation-for="FirstName" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="LastName" class="control-label"></label>
-            <input id="lastName" asp-for="LastName" class="form-control" />
-            <span asp-validation-for="LastName" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Description" class="control-label"></label>
-            <input id="description" asp-for="Description" class="form-control" />
-            <span asp-validation-for="Description" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label class="hideAccount">
-                Hide account from other users
-                <input id="accountHidden" type="checkbox" checked="@Model.AccountHidden">
-                <span class="hideAccountCheckmark"></span>
-            </label>
-        </div>
-
-        <div class="form-group">
-            <input id="editProfile" type="submit" value="Save" class="btn btn-primary" />
-        </div>
-    </form>
+            <div class="form-group">
+                <input id="editProfile" type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
 
         <ul class="nav myprofile">
             <li class="nav-item"><a class="nav-link" id="password" href="/Identity/Account/Manage/ChangePassword">Manage password</a></li>
