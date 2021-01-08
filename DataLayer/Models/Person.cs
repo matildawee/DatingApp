@@ -14,18 +14,23 @@ namespace DataLayer.Models
         public string Email { get; set; }
 
         [DisallowNull]
-        [Required(ErrorMessage = "Fyll i namn!")]
+        [Required(ErrorMessage = "Enter first name with uppercase first letter")]
+        [RegularExpression(@"^[A-Z]+[a-zA-Z]*$")] //Anger att första bokstaven måste vara stor bokstav, och efterföljande tecken måste vara bokstäver
         public string FirstName { get; set; }
 
         [DisallowNull]
-        [RegularExpression(@"^[A-Z]+[a-zA-Z]*$")] //Första bokstaven måste vara stor bokstav, och efterföljande tecken måste vara bokstäver
+        [Required(ErrorMessage = "Enter last name with uppercase first letter")]
+        [RegularExpression(@"^[A-Z]+[a-zA-Z]*$")] //Anger att första bokstaven måste vara stor bokstav, och efterföljande tecken måste vara bokstäver
         public string LastName { get; set; }
 
-        [StringLength(500)]
+        [StringLength(300)]
         public string Description { get; set; }
 
-        public string Picture { get; set; }
+        public byte[] Picture { get; set; }
 
-        //public List<Post> Posts { get; set; }
+        public List<FriendRequest> FriendRequestSent  { get; set; }
+        public List<FriendRequest> FriendRequestReceived { get; set; }
+
+        public bool AccountHidden { get; set; }
     }
 }

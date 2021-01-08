@@ -103,7 +103,8 @@ namespace DatingApp.Areas.Identity.Pages.Account
                         FirstName = firstname,
                         LastName = lastname,
                         Description = "",
-                        Picture = "~/img/default_profile_picture.jfif"
+                        Picture = null,
+                        AccountHidden = false
                     };
                     _context.Persons.Add(person);
                     _context.SaveChanges();

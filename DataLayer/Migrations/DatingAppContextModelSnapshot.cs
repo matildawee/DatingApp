@@ -19,45 +19,20 @@ namespace DataLayer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.1");
 
-            modelBuilder.Entity("DataLayer.Models.Friend", b =>
-                {
-                    b.Property<int>("FirstPersonId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SecondPersonId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Category")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("FirstPersonId", "SecondPersonId");
-
-                    b.HasIndex("SecondPersonId");
-
-                    b.ToTable("Friend");
-                });
-
             modelBuilder.Entity("DataLayer.Models.FriendRequest", b =>
                 {
-                    b.Property<int>("FriendRequestId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
 
                     b.Property<int>("ReceiverId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RecevierPersonId")
-                        .HasColumnType("int");
+                    b.Property<bool>("Accepted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("SenderId")
-                        .HasColumnType("int");
+                    b.HasKey("SenderId", "ReceiverId");
 
-                    b.HasKey("FriendRequestId");
-
-                    b.HasIndex("RecevierPersonId");
-
-                    b.HasIndex("SenderId");
+                    b.HasIndex("ReceiverId");
 
                     b.ToTable("FriendRequest");
                 });
@@ -69,9 +44,12 @@ namespace DataLayer.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<bool>("AccountHidden")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
@@ -81,10 +59,11 @@ namespace DataLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Picture")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("Picture")
+                        .HasColumnType("varbinary(max)");
 
                     b.HasKey("PersonId");
 
@@ -105,8 +84,8 @@ namespace DataLayer.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("PostText")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
@@ -120,39 +99,21 @@ namespace DataLayer.Migrations
                     b.ToTable("Post");
                 });
 
-            modelBuilder.Entity("DataLayer.Models.Friend", b =>
-                {
-                    b.HasOne("DataLayer.Models.Person", "FirstPerson")
-                        .WithMany()
-                        .HasForeignKey("FirstPersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DataLayer.Models.Person", "SecondPerson")
-                        .WithMany()
-                        .HasForeignKey("SecondPersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FirstPerson");
-
-                    b.Navigation("SecondPerson");
-                });
-
             modelBuilder.Entity("DataLayer.Models.FriendRequest", b =>
                 {
-                    b.HasOne("DataLayer.Models.Person", "Recevier")
-                        .WithMany()
-                        .HasForeignKey("RecevierPersonId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                    b.HasOne("DataLayer.Models.Person", "Receiver")
+                        .WithMany("FriendRequestReceived")
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("DataLayer.Models.Person", "Sender")
-                        .WithMany()
+                        .WithMany("FriendRequestSent")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Recevier");
+                    b.Navigation("Receiver");
 
                     b.Navigation("Sender");
                 });
@@ -174,6 +135,13 @@ namespace DataLayer.Migrations
                     b.Navigation("Author");
 
                     b.Navigation("Person");
+                });
+
+            modelBuilder.Entity("DataLayer.Models.Person", b =>
+                {
+                    b.Navigation("FriendRequestReceived");
+
+                    b.Navigation("FriendRequestSent");
                 });
 #pragma warning restore 612, 618
         }

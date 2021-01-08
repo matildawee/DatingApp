@@ -16,14 +16,12 @@ namespace DatingApp.Controllers
         private readonly DatingAppContext _context;
         private PersonRepository personRepository;
         private FriendRequestRepository requestRepository;
-        private FriendRepository friendRepository;
 
         public RequestController(DatingAppContext context)
         {
             _context = context;
             personRepository = new PersonRepository(context);
             requestRepository = new FriendRequestRepository(context);
-            friendRepository = new FriendRepository(context);
         }
 
         [AllowAnonymous]
@@ -31,13 +29,12 @@ namespace DatingApp.Controllers
         public PartialViewResult GetFriendRequests()
         {
             string email = User.Identity.Name;
-            int id = personRepository.GetIdByUserIdentityEmail(email);
-            List<FriendRequest> requests = requestRepository.GetAllRequestsSentToUser(id);
-            if (requests.Count >= 1)
+            int reciever = personRepository.GetIdByUserIdentityEmail(email);
+            List<FriendRequest> requests = requestRepository.GetAllRequestsSentToUser(reciever);
+            if (requests.Count > 0)
             {
                 IEnumerable<RequestViewModel> model = requests.Select((r) => new RequestViewModel()
                 {
-                    FriendRequestId = r.FriendRequestId,
                     SenderId = r.SenderId,
                     FullName = r.Sender.FirstName + " " + r.Sender.LastName
                 });
@@ -58,23 +55,22 @@ namespace DatingApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult AcceptRequest(int id)
+        public ActionResult AcceptRequest(int senderId)
         {
-            int currentUser = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
+            int receiverId = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
 
-            List<FriendRequest> requests = requestRepository.GetAllRequestsSentToUser(currentUser);
+            List<FriendRequest> requests = requestRepository.GetAllRequestsSentToUser(receiverId);
             
             foreach(FriendRequest fr in requests)
             {
-                if(fr.SenderId.Equals(id) && fr.ReceiverId.Equals(currentUser))
+                if(fr.SenderId == senderId && fr.ReceiverId == receiverId)
                 {
-                    requestRepository.DeleteRequest(fr.FriendRequestId);
-                    friendRepository.AddFriend(new Friend
-                    {
-                        FirstPersonId = currentUser,
-                        SecondPersonId = id,
-                        // OBS! Lägga till kategori!
-                    });
+                    //requestRepository.AcceptRequest(fr);
+
+                    fr.Accepted = true;
+                    _context.Update(fr);
+                    _context.SaveChanges();
+
                     return Json(new { Result = true });
                 }
             }
@@ -82,16 +78,16 @@ namespace DatingApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeclineRequest(int id)
+        public ActionResult DeclineRequest(int senderId)
         {
-            int currentUser = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
-            List<FriendRequest> requests = requestRepository.GetAllRequestsSentToUser(currentUser);
+            int receiverId = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
+            List<FriendRequest> requests = requestRepository.GetAllRequestsSentToUser(receiverId);
 
             foreach(FriendRequest fr in requests)
             {
-                if (fr.SenderId.Equals(id) && fr.ReceiverId.Equals(currentUser))
+                if (fr.SenderId.Equals(senderId) && fr.ReceiverId.Equals(receiverId))
                 {
-                    requestRepository.DeleteRequest(fr.FriendRequestId);
+                    requestRepository.DeleteFriendOrRequest(fr);
                     return Json(new { Result = true });
                 }
             }
@@ -99,38 +95,35 @@ namespace DatingApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult SendRequest(int id)
+        public ActionResult SendRequest(int receiverId)
         {
-            int currentUser = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
-            if (requestRepository.FrienRequestIncoming(currentUser, id) || requestRepository.FrienRequestOutgoing(currentUser, id))
-            {
-                return Json(new { result = false });
-            }
-            else
-            {
+            int senderId = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
                 requestRepository.AddRequest(new FriendRequest
                 {
-                    SenderId = currentUser,
-                    ReceiverId = id,
+                    SenderId = senderId,
+                    ReceiverId = receiverId,
+                    Accepted = false
                 });
                 return Json(new { result = true });
-            }
         }
-
+        
         [HttpPost]
-        public ActionResult GetFriendStatus()
+        public ActionResult CancelRequest(int receiverId)
         {
-            //var d = "jaja";
-            //var e = "tjabba";
-            //if (d != e)
-            //{
-            //    return Json(new { text = "Tjoho" });
-            //}
-            //else
-            //{
-            //    return Json(new { text = "Nehe" });
-            //}
-            return Json(new { text = "Nehe" });
+            int senderId = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
+            if (requestRepository.FriendRequestOutgoing(senderId, receiverId))
+            {
+                List<FriendRequest> requests = requestRepository.GetAllRequestsSentByUser(senderId);
+                foreach (FriendRequest r in requests)
+                {
+                    if (r.ReceiverId == receiverId && r.SenderId == senderId)
+                    {
+                        requestRepository.DeleteFriendOrRequest(r);
+                        return Json(new { result = true });
+                    }
+                }
+            }
+            return Json(new { result = false });
         }
     }
 }

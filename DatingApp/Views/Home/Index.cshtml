@@ -57,26 +57,6 @@
 
 else
 {
-    <button id="friendStatus"></button>
-
-    @switch (ViewBag.PersonRelation)
-    {
-        case "Friends":
-            <button class="btn btn-danger" id="FriendBtn">Remove Friend</button>
-            break;
-        case "IncomingRequest":
-            <button class="btn btn-info" id="FriendBtn">Incoming Friend Request</button>
-            break;
-        case "OutgoingRequest":
-            <button class="btn btn-warning" id="FriendBtn">Cancel Friend Request</button> 
-            break;
-        case "NotFriends":
-            <button class="btn btn-info" id="FriendBtn">Send Friend Request</button>
-            break;
-        default:
-            break; // This should never happen
-     }
-
     <center>
         @foreach (var item in Model)
         {
