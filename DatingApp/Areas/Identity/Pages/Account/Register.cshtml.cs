@@ -75,11 +75,13 @@ namespace DatingApp.Areas.Identity.Pages.Account
         }
         public class InputModelDetails
         {
-            [Required]
+            [Required(ErrorMessage = "Enter first name with uppercase first letter")]
+            [RegularExpression(@"^[A-Z]+[a-zA-Z]*$")]
             [Display(Name = "First name")]
             public string FirstName { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Enter first name with uppercase first letter")]
+            [RegularExpression(@"^[A-Z]+[a-zA-Z]*$")]
             [Display(Name = "Last name")]
             public string LastName { get; set; }
         }

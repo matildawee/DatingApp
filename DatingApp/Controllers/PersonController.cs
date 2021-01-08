@@ -53,13 +53,20 @@ namespace DatingApp.Controllers
         public string GetPersonRelation(int id)
         {
             int loggedInUser = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
-            if (requestRepository.IsFriends(loggedInUser, id)) {
+            if (requestRepository.IsFriends(loggedInUser, id))
+            {
                 return "Friends";
-            } else if(requestRepository.FriendRequestOutgoing(loggedInUser, id)) {
+            }
+            else if (requestRepository.FriendRequestOutgoing(loggedInUser, id))
+            {
                 return "OutgoingRequest";
-            } else if(requestRepository.FriendRequestIncoming(loggedInUser, id)) {
+            }
+            else if (requestRepository.FriendRequestIncoming(loggedInUser, id))
+            {
                 return "IncomingRequest";
-            } else {
+            }
+            else
+            {
                 return "NotFriends";
             }
         }
