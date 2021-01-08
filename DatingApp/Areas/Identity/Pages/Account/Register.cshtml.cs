@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DatingApp.Areas.Identity.Pages.Account
 {
@@ -92,7 +94,19 @@ namespace DatingApp.Areas.Identity.Pages.Account
             {
                 var user = new IdentityUser { UserName = Input.Email, Email = Input.Email, EmailConfirmed = true};
                 var result = await _userManager.CreateAsync(user, Input.Password);
-                
+
+                //byte[] imageData = null;
+                //string path = "/Users/wennb/Documents/GitHub/DatingApp/DatingApp/img/default_profile_picture.jpg";
+                //AppDomain.CurrentDomain.BaseDirectory +
+
+                //"/DatingApp/DatingApp/img/default_profile_picture.jpg";
+
+                //FileStream file = new FileStream(path, FileMode.Open);
+
+                //using (var binary = new BinaryReader(file))
+                //{
+                //    imageData = binary.ReadBytes((int)file.Length);
+                //}
                 if (result.Succeeded)
                 {
                     string firstname = Request.Form["firstName"];

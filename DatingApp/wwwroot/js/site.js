@@ -78,7 +78,8 @@ function SetNumberOfRequests() {
             }
         },
         error: () => {
-            alert("Error: Unable to fetch and display number of friend requests");
+          //  alert("Error: Unable to fetch and display number of friend requests");
+            console.log("Error: Unable to fetch and display number of friend requests");
         }
     });
 }
