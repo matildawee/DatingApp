@@ -1,9 +1,4 @@
-﻿using DataLayer.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer.Repositories
 {
@@ -21,10 +16,6 @@ namespace DataLayer.Repositories
         public void SaveChanges()
         {
             context.SaveChanges();
-        }
-        public void Edit(TValue item)
-        {
-            context.Set<TValue>().Update(item);
         }
     }
 }

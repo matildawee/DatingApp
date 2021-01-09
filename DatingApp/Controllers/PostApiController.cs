@@ -1,16 +1,9 @@
 ﻿using DataLayer;
 using DataLayer.Models;
 using DataLayer.Repositories;
-using DatingApp.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 namespace DatingApp.Controllers
 {
     [Route("api/[controller]")]
@@ -30,23 +23,26 @@ namespace DatingApp.Controllers
         [Route("AddPost")]
         public void AddPost(Post post)
         {
-            if (ModelState.IsValid)
+            if (post.PersonId == 0)
             {
-                if (post.PersonId == 0)
-                {
-                    NotFound();
-                }
+                NotFound();
+            }
 
-                Post newPost = new Post()
-                {
-                    PostText = post.PostText,
-                    PersonId = post.PersonId,
-                    AuthorId = personRepository.GetIdByUserIdentityEmail(User.Identity.Name),
-                    Timestamp = DateTime.Now
-                };
-
+            Post newPost = new Post()
+            {
+                PostText = post.PostText,
+                PersonId = post.PersonId,
+                AuthorId = personRepository.GetIdByUserIdentityEmail(User.Identity.Name),
+                Timestamp = DateTime.Now
+            };
+            try
+            {
                 _context.Posts.Add(newPost);
                 _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                
             }
         }
     }
