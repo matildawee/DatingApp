@@ -11,40 +11,40 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-<div class="text-center">
-    <img width="200" height="200" src="@Url.Action("LoadPicture", "Person", new { id = @Model.PersonId })" />
-    <h2>@Model.FirstName @Model.LastName</h2>
-    <p>@Model.Description</p>
+    <div class="text-center">
+        <img width="200" height="200" src="@Url.Action("LoadPicture", "Person", new { id = @Model.PersonId })" />
+        <h2>@Model.FirstName @Model.LastName</h2>
+        <p>@Model.Description</p>
 
-    @switch (ViewBag.PersonRelation)
-    {
-        case "Friends":
-             <input type="button" class="btn btn-danger" id="FriendBtn" value="Remove Friend"
-                    onclick="location.href='@Url.Action("RemoveFriend", "Person", new {friendToRemove = Model.PersonId })'" />
-            break;
-        case "IncomingRequest":
-            <div>
-                <input type="button" class="btn btn-success" id="AcceptBtn" value="Accept"
-                       onclick="location.href='@Url.Action("AcceptRequest", "Request", new {senderId = Model.PersonId })'" />
-                <input type="button" class="btn btn-danger" id="DeclineBtn" value="Decline"
-                       onclick="location.href='@Url.Action("DeclineRequest", "Request", new {senderId = Model.PersonId })'" />
-            </div>
-            break;
-        case "OutgoingRequest":
-            <input type="button" class="btn btn-warning" id="FriendBtn" value="Cancel Friend Request"
-                   onclick="location.href='@Url.Action("CancelRequest", "Request", new {receiverId = Model.PersonId })'" />
-            break;
-        case "NotFriends":
-            <input type="button" class="btn btn-info" id="FriendBtn" value="Send Friend Request"
-                   onclick="location.href='@Url.Action("SendRequest", "Request", new {receiverId = Model.PersonId })'" />
-            break;
-        default:
-            break;
-    }
-    
-</div>
+        @switch (ViewBag.PersonRelation)
+        {
+            case "Friends":
+                <input type="button" class="btn btn-danger" id="FriendBtn" value="Remove Friend"
+                       onclick="location.href='@Url.Action("RemoveFriend", "Person", new {friendToRemove = Model.PersonId })'" />
+                break;
+            case "IncomingRequest":
+                <div>
+                    <input type="button" class="btn btn-success" id="AcceptBtn" value="Accept"
+                           onclick="location.href='@Url.Action("AcceptRequest", "Request", new {senderId = Model.PersonId })'" />
+                    <input type="button" class="btn btn-danger" id="DeclineBtn" value="Decline"
+                           onclick="location.href='@Url.Action("DeclineRequest", "Request", new {senderId = Model.PersonId })'" />
+                </div>
+                break;
+            case "OutgoingRequest":
+                <input type="button" class="btn btn-warning" id="FriendBtn" value="Cancel Friend Request"
+                       onclick="location.href='@Url.Action("CancelRequest", "Request", new {receiverId = Model.PersonId })'" />
+                break;
+            case "NotFriends":
+                <input type="button" class="btn btn-info" id="FriendBtn" value="Send Friend Request"
+                       onclick="location.href='@Url.Action("SendRequest", "Request", new {receiverId = Model.PersonId })'" />
+                break;
+            default:
+                break;
+        }
+
+    </div>
     <div class="col-lg-5" id="PostWall">
-        @Html.Partial("/Views/Post/_Post.cshtml", Model.Posts)
+        @await Html.PartialAsync("/Views/Post/_Post.cshtml", Model.Posts)
         <hr />
     </div>
 }

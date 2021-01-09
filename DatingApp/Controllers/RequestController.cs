@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace DatingApp.Controllers
 {
@@ -66,8 +65,16 @@ namespace DatingApp.Controllers
                 if(fr.SenderId == senderId && fr.ReceiverId == receiverId)
                 {
                     fr.Accepted = true;
-                    _context.Update(fr);
-                    _context.SaveChanges();
+                    try
+                    {
+                        _context.Update(fr);
+                        _context.SaveChanges();
+                    }
+                    catch (Exception)
+                    {
+                        TempData["ProcessMessage"] = "Could not update profile picture, please try again";
+                        return PartialView("Exception");
+                    }
                 }
             }
             return RedirectToAction("Profile", "Person", new { id = senderId });
@@ -82,7 +89,16 @@ namespace DatingApp.Controllers
             {
                 if (fr.SenderId.Equals(senderId) && fr.ReceiverId.Equals(receiverId))
                 {
-                    requestRepository.DeleteFriendOrRequest(fr);
+                    try
+                    {
+                        _context.Remove(fr);
+                        _context.SaveChanges();
+                    }
+                    catch (Exception)
+                    {
+                        TempData["ProcessMessage"] = "Could not decline friend, try again later";
+                        return PartialView("Exception");
+                    }
                 }
             }
             return RedirectToAction("Profile", "Person", new { id = senderId });
@@ -99,7 +115,16 @@ namespace DatingApp.Controllers
                 ReceiverId = receiverId,
                 Accepted = false
             };
-            requestRepository.AddRequest(friendRequest);
+            try
+            {
+                _context.Add(friendRequest);
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                TempData["ProcessMessage"] = "Could not send request, try again later";
+                return PartialView("Exception");
+            }
             return RedirectToAction("Profile", "Person", new { id = receiverId });
         }
 
@@ -113,11 +138,19 @@ namespace DatingApp.Controllers
                 {
                     if (r.ReceiverId == receiverId && r.SenderId == senderId)
                     {
-                        requestRepository.DeleteFriendOrRequest(r);
+                        try
+                        {
+                            _context.Remove(r);
+                            _context.SaveChanges();
+                        }
+                        catch (Exception)
+                        {
+                            TempData["ProcessMessage"] = "Could not cancel request, try again later";
+                            return PartialView("Exception");
+                        }
                     }
                 }
             }
-            var hej = receiverId;
             return RedirectToAction("Profile", "Person", new { id = receiverId });
         }
     }

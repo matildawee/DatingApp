@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using DataLayer;
 using DataLayer.Models;
@@ -15,9 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace DatingApp.Areas.Identity.Pages.Account
 {
@@ -75,13 +71,13 @@ namespace DatingApp.Areas.Identity.Pages.Account
         }
         public class InputModelDetails
         {
-            [Required(ErrorMessage = "Enter first name with uppercase first letter")]
-            [RegularExpression(@"^[A-Z]+[a-zA-Z]*$")]
+            [Required]
+            [RegularExpression(@"^[a-öA-Ö]+$", ErrorMessage = "Enter first name with only letters (A-Ö)")]
             [Display(Name = "First name")]
             public string FirstName { get; set; }
 
-            [Required(ErrorMessage = "Enter first name with uppercase first letter")]
-            [RegularExpression(@"^[A-Z]+[a-zA-Z]*$")]
+            [Required]
+            [RegularExpression(@"^[a-öA-Ö]+$", ErrorMessage = "Enter first name with only letters (A-Ö)")]
             [Display(Name = "Last name")]
             public string LastName { get; set; }
         }
@@ -129,30 +125,6 @@ namespace DatingApp.Areas.Identity.Pages.Account
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("MyProfile", "Person");
-
-                    /*_logger.LogInformation("User created a new account with password.");
-
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                        
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }*/
                 }
 
                 foreach (var error in result.Errors)

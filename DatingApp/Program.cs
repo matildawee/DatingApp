@@ -16,8 +16,6 @@ namespace DatingApp
     {
         public static void Main(string[] args)
         {
-            //CreateHostBuilder(args).Build().Run();
-
             var host = CreateHostBuilder(args).Build();
 
             CreateDbIfNotExists(host);
@@ -40,7 +38,6 @@ namespace DatingApp
                 try
                 {
                     var context = services.GetRequiredService<DatingAppContext>();
-                    DbInitializer.Initialize(context);
                 }
                 catch (Exception ex)
                 {

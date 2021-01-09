@@ -6,10 +6,6 @@
         <a href="@Url.Action("Profile", "Person", new { id = item.SenderId })">
             <span>@item.FullName</span>
         </a>
-        <div class="float-right">
-            <button id="AcceptBtn" data-id="@item.SenderId">Accept</button>
-            <button id="DeclineBtn" data-id="@item.SenderId">Decline</button>
-        </div>
     </div>
     }
 </div>

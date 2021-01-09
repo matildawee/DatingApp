@@ -4,13 +4,10 @@ using DataLayer.Repositories;
 using DatingApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DatingApp.Controllers
 {
@@ -31,15 +28,6 @@ namespace DatingApp.Controllers
             random = new Random();
             personRepository = new PersonRepository(context);
         }
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        //public async Task<IActionResult> Index()
-        //{
-        //   return View(await _context.Persons.ToListAsync());
-        //}
 
         [AllowAnonymous]
         public ActionResult Index()
@@ -55,14 +43,14 @@ namespace DatingApp.Controllers
             }
 
             List<Person> randomProfiles = new List<Person>();
-            if(profiles.Count > 0)
+            if(profiles.Count > 0) //Kollar så att profiler finns i databasen
             {
-                if (profiles.Count == 1)
+                if (profiles.Count == 1) //om det bara finns en profil så visas bara den
                 {
                     var profile = profiles[0];
                     randomProfiles.Add(profile);
                 }
-                else if (profiles.Count == 2)
+                else if (profiles.Count == 2) //Om det finns två profiler visas de två
                 {
                     for (int i = 0; i < 2; i++)
                     {
@@ -72,14 +60,14 @@ namespace DatingApp.Controllers
                 }
                 else
                 {
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < 3; i++) //annars slumpas tre personer fram
                     {
                         var profile = profiles[random.Next(profiles.Count)];
                         if (!randomProfiles.Exists((x) => x == profile))
                         {
                             randomProfiles.Add(profile);
                         }
-                        else
+                        else //ifall en person slumpas in två gångar backas index tills en ny person kommer in i listan
                         {
                             i--;
                         }
