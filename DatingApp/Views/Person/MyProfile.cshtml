@@ -11,19 +11,30 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <h1 class="myprofile" >My Profile</h1>
+    <h1 class="myprofile">My Profile</h1>
     <br />
     <div>
-        <img width="200" height="200" src="@Url.Action("LoadPicture", "Person", new { userId = @Model.PersonId })" />
+        <div class="myprofile">
+            <img width="200" height="200" src="@Url.Action("LoadPicture", "Person", new { id = @Model.PersonId })" />
+        </div>
+        <br />
+        <form class="text-center" asp-action="UploadImage"
+              asp-controller="Person"
+              method="post"
+              enctype="multipart/form-data">
+            <input type="file" id="file1"
+                   name="file1"
+                   multiple="multiple" />
+            <button type="submit">Upload File</button>
+        </form>
 
-        <form asp-action="UpdateProfile" class="myprofile">
+        @*<div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            Your profile has been updated.
+        </div>*@
+
+        <form asp-action="UpdateProfile" class="myprofile" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label class="ProfileImage">
-                    <input asp-for="Picture" type="file" name="ProfileImage" id="fileUpload" accept=".png,.jpg,.jpeg" />
-                    <span class="ProfileImage"></span>
-                </label>
-            </div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -57,13 +68,15 @@
         </ul>
     </div>
 
-    <div class="col-lg-5" id="PostWall">
-        @Html.Partial("/Views/Post/_Post.cshtml", Model.Posts)
-        <hr />
-    </div>
-    <div class="col-lg-5" id="FriendWall">
-        @Html.Partial("_Friend.cshtml", Model.Friends)
-        <hr />
+    <div class="profileWall">
+        <div class="col-lg-5" id="PostWall">
+            @Html.Partial("/Views/Post/_Post.cshtml", Model.Posts)
+            <hr />
+        </div>
+        <div class="col-lg-5" id="FriendWall">
+            @Html.Partial("_Friend.cshtml", Model.Friends)
+            <hr />
+        </div>
     </div>
 
 }

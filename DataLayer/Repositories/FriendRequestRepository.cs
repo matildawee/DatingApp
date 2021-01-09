@@ -12,7 +12,7 @@ namespace DataLayer.Repositories
 
         public List<FriendRequest> GetFriendsByPersonId(int id)
         {
-            return items.Where((p) => p.SenderId.Equals(id) || p.ReceiverId.Equals(id) && p.Accepted.Equals(true)).ToList();
+            return items.Where((p) => p.SenderId.Equals(id) && p.Accepted.Equals(true) || p.ReceiverId.Equals(id) && p.Accepted.Equals(true)).ToList();
         }
 
         public bool IsFriends( int loggedInUser, int id)
