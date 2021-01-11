@@ -28,10 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="img\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\img\default_profile_picture.jpg" />
   </ItemGroup>
 

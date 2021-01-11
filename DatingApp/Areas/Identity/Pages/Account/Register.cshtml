@@ -9,6 +9,7 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <h4>Create a new account.</h4>
             <hr />
             <div class="form-group">
@@ -29,12 +30,12 @@
 
             <div class="form-group">
                 <label asp-for="Input2.FirstName"></label>
-                <input name="firstName" runat ="server" asp-for="Input2.FirstName" class="form-control" />
+                <input asp-for="Input2.FirstName" class="form-control" />
                 <span asp-validation-for="Input2.FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Input2.LastName"></label>
-                <input name="lastName" runat ="server" asp-for="Input2.LastName" class="form-control" />
+                <input asp-for="Input2.LastName" class="form-control" />
                 <span asp-validation-for="Input2.LastName" class="text-danger"></span>
             </div>
 
@@ -42,6 +43,7 @@
         </form>
     </div>
 </div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

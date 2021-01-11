@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
@@ -27,7 +26,6 @@ namespace DatingApp.Areas.Identity.Pages.Account
         private readonly DatingAppContext _context;
         private readonly IWebHostEnvironment _hostEnvironment;
 
-
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
@@ -46,6 +44,7 @@ namespace DatingApp.Areas.Identity.Pages.Account
 
         [BindProperty]
         public InputModel Input { get; set; }
+        [BindProperty]
         public InputModelDetails Input2 { get; set; }
         public string ReturnUrl { get; set; }
 
@@ -98,24 +97,21 @@ namespace DatingApp.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 byte[] imageData = null;
-                string wwwrootPath = _hostEnvironment.WebRootPath;
-                string path = wwwrootPath + "/img/default_profile_picture.jpg";
-
-                FileStream file = new FileStream(path, FileMode.Open);
-
+                string wwwrootPath = _hostEnvironment.WebRootPath; //Hämtar sökvägen till wwwroot
+                string path = wwwrootPath + "/img/default_profile_picture.jpg"; //Hämtar sökväg för default-bilden som finns i /wwwroot/img
+                FileStream file = new FileStream(path, FileMode.Open); //Skapar en FileStream av sökvägen för default-bilden
                 using (var binary = new BinaryReader(file))
                 {
-                    imageData = binary.ReadBytes((int)file.Length);
+                    imageData = binary.ReadBytes((int)file.Length); //Gör om FileStram till en BinaryReader
                 }
+
                 if (result.Succeeded)
                 {
-                    string firstname = Request.Form["firstName"];
-                    string lastname = Request.Form["lastName"];
-                    var person = new Person
+                    var person = new Person //Skapar ny person som läggs till i databasen DatingApp
                     {
                         Email = Input.Email,
-                        FirstName = firstname,
-                        LastName = lastname,
+                        FirstName = Input2.FirstName,
+                        LastName = Input2.LastName,
                         Description = "",
                         Picture = imageData,
                         AccountHidden = false

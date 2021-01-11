@@ -18,11 +18,10 @@ namespace DatingApp.Controllers
             personRepository = new PersonRepository(context);
         }
 
-        /*Hämtar matchande profiler för sökning*/
-        [AllowAnonymous] /*Endast för att testa vid utloggad*/
+        //Hämtar matchande profiler för sökning
         public ActionResult Result(string searchString)
         {
-            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentFilter"] = searchString; //Användarens inmatning
             List<Person> searchResult = new List<Person>();
             searchResult = personRepository.SearchResultByName(searchString);
             if (searchResult.Count > 0)

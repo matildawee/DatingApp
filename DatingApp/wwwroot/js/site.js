@@ -1,12 +1,6 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿// -- Friend Request -- 
 
-// Write your JavaScript code.
-
-
-// -- Friend Request -- 
-
-//Getting and setting the number of friend requests when the page has been loaded.
+//Hämtar och sätter antalet vänförfrågningar när sidan laddats in.
 $(document).ready(function () {
     setInterval(showNumberOfRequests, 5000);
     function showNumberOfRequests() {;
@@ -14,19 +8,17 @@ $(document).ready(function () {
     }
 });
 
-//$("#popupRequests").on("click", "#AcceptBtn", AcceptRequest);
-//$("#popupRequests").on("click", "#DeclineBtn", DeclineRequest);
 
 var ref = $('#showRequests');
 var popup = $('#popupRequests');
 
-//Hiding the popup div and friedn requests notification as default
+//Diven som visas med hjälp av en popper och notifikationen för antalet förfrågningar är gömda som default.
 popup.hide();
 $("#requestQty").hide();
 
-/*If the friend requests button is clicked and the popup div is hidden, it shows up. A popper is used for positioning the div
- * underneath the button. Methods for updating the content and getting number of requests is called. Otherwise the popup div
- * will be hidden.*/
+/*Om knappen för förfrågningar klickas på och popup-diven är gömd visas den. Poppern gör att popup-diven hamnar under knappen.
+ * Metoderna för att uppdatera innehållet i diven och antalet förfrågningar anropas. Visas diven när användaren trycker på knappen
+ * göms den istället.*/
 ref.click(function ShowPopUp() {
     if ($(popup).is(":hidden")) {
         popup.show();
@@ -54,7 +46,7 @@ function Update_Content() {
         contentType: "application/json;charset=UTF-8",
         dataType: "html",
         success: function (data) {
-            $("#popupRequests").html(data);
+            $("#popupRequests").html(data); //Uppdaterar diven med html (partial view)
         },
         error: () => {
             alert("Error: Unable to fetch and display friend requests");
@@ -71,101 +63,27 @@ function SetNumberOfRequests() {
             var number = data.data;
             if (number >= 1) {
                 $("#requestQty").show();
-                $("#requestQty").text(number); // Set number
+                $("#requestQty").text(number); // Sätter antalet förfrågningar.
             }
             else {
-                $("#requestQty").hide();
+                $("#requestQty").hide(); //Gömmer notifikationen om det inte finns några förfrågningar.
             }
         },
         error: () => {
-          //  alert("Error: Unable to fetch and display number of friend requests");
             console.log("Error: Unable to fetch and display number of friend requests");
         }
     });
 }
 
-//function AcceptRequest() {
-//    var id = this.attributes[1].value;
-//    var hej = "";
-//    $.ajax({
-//        type: "POST",
-//        url: "/Request/AcceptRequest/" + id,
-//        //dataType: "JSON",
-//        data : "id=" + id,
-//        success: () => {
-//            Update_Content();
-//            SetNumberOfRequests();
-//            //var currentUrl = window.location.href;
-//            //var urlArray = currentUrl.split("/Profile/Index/");
-//            //if (urlArray.length > 1) {
-//            //    if (urlArray[1] == UserId) {
-//            //        ButtonGroupFriends();
-//            //    }
-//            //    Update_Friends();
-//            //}
-//            //if ($("#NotificationNumberSpan").val() == 0) {
-//            //    ToggleNotificationPopUpDivDisplay();
-//            //}
-//        },
-//        error: () => {
-//            alert("Error: Unable to accept friend request.");
-//        }
-//    });
-//}
 
-//function DeclineRequest() {
-//    var id = this.attributes[1].value;
-//    $.ajax({
-//        type: "POST",
-//        url: "/Request/DeclineRequest/",
-//        //dataType: "JSON",
-//        data: id,
-//        success: () => {
-//            Update_Content();
-//            SetNumberOfRequests();
+// -- Sök-funktionen --
 
-//            //var currentUrl = window.location.href;
-//            //var urlArray = currentUrl.split("/Profile/Index/");
-//            //if (urlArray.length > 1) {
-//            //    if (urlArray[1] == UserId) {
-//            //        ButtonGroupNotFriends();
-//            //    }
-//            //}
-
-//            //if ($("#NotificationNumberSpan").val() == 0) {
-//            //    ToggleNotificationPopUpDivDisplay();
-//            //}
-//        },
-//        error: () => {
-//            alert("Error: Unable to decline friend request.");
-//        }
-//    });
-//}
-
-//$(document).ready(function () {
-//    //var d = new Date();
-//    //if (d.getMonth() == 5) {
-//    //    $("#friendStatus").text("tjoho");
-//    //}
-//    //else {
-//    //    $("#friendStatus").text("nehee");
-//    //}
-//    //testing();
-//});
-
-//function testing() {
-//    $.ajax({
-//        type: "POST",
-//        url: "/Request/GetFriendStatus/",
-//        dataType: "JSON",
-//        success: function (data) {
-//            var result = data.text;
-//            //$("#friendStatus").text(result);
-//            alert(result);
-//        },
-//        error: function (data) {
-//            var r = data.text;
-//            alert("Error: " + r);
-//        }
-//    });
-//}
+//Submita sökknappen när användaren trycker på enter-knappen inuti input-fältet. 
+    $(document).ready(function () {
+        $("#search").keypress(function (event) {
+            if (event.which == 13) {
+                event.preventDefault();
+                $("#searchBtn").click();
+            }
+        });
+        });

@@ -51,7 +51,8 @@ namespace DatingApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public string GetPersonRelation(int id) //Kollar vilken relation två användare har till varandra
+        //Kollar vilken relation två användare har till varandra för att uppdatera relationsknappen i Profile-vyn
+        public string GetPersonRelation(int id)  
         {
             int loggedInUser = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
             if (requestRepository.IsFriends(loggedInUser, id))
@@ -115,7 +116,6 @@ namespace DatingApp.Controllers
                     Posts = postUserViewModel,
                     Friends = friendUserViewModel
                 };
-
                 return View(profileViewModel);
             }
             //Om vi kommer hit är något fel och vi återgår till startsidan
@@ -145,7 +145,8 @@ namespace DatingApp.Controllers
             List<FriendRequest> friends = requestRepository.GetFriendsByPersonId(currentUser);
             foreach (FriendRequest f in friends)
             {
-                //Hämtar den FriendRequest där SenderID och ReceiverID stämmer, och tar bort den. 
+                /*Hämtar den FriendRequest där SenderID och ReceiverID stämmer, och tar bort den, kontroll görs åt båda hållen
+                 * - användaren kan nämligen antingen vara den som skickat eller fått vänförfrågan. */
                 if (f.ReceiverId.Equals(currentUser) && f.SenderId.Equals(friendToRemove) || f.ReceiverId.Equals(friendToRemove) && f.SenderId.Equals(currentUser))
                 {
                     try
@@ -164,6 +165,7 @@ namespace DatingApp.Controllers
             return RedirectToAction("Profile", "Person", new { id = friendToRemove });
         }
 
+        //Hämtar prfilbild som FileContentResult för att visas i den vyn där metoden anropats.
         [AllowAnonymous]
         public FileContentResult LoadPicture(int id)
         {
@@ -203,10 +205,12 @@ namespace DatingApp.Controllers
             return RedirectToAction("MyProfile");
         }
 
+        //Uppdaterar profilbilden till användarens valda bild
         [ValidateAntiForgeryToken]
         public IActionResult UploadImage()
         {
-            foreach (var file in Request.Form.Files)
+            foreach (var file in Request.Form.Files) 
+                //loopar igenom filerna som lagts in, ifall man lagt in flera bilder så kommer den senast inlagda vara den som sparas
             {
                 int currentUser = personRepository.GetIdByUserIdentityEmail((string)User.Identity.Name);
                 Person personToUpdate = personRepository.GetPersonById(currentUser);
@@ -214,6 +218,7 @@ namespace DatingApp.Controllers
                 System.IO.MemoryStream ms = new MemoryStream();
                 file.CopyTo(ms);
                 personToUpdate.Picture = ms.ToArray();
+                    //skapar en memorystream som hämtar in bildfilen och lägger den som användarens nya bild
 
                 ms.Close();
                 ms.Dispose();
@@ -230,6 +235,13 @@ namespace DatingApp.Controllers
                 
             }
             return RedirectToAction("MyProfile");
+        }
+
+        public PartialViewResult UpdatePostWall(int id)
+        {
+            List<Post> posts = postRepository.GetAllPostsByPersonId(id);
+            PostUserViewModel postUserViewModel = CreatePostUserViewModel(posts, id);
+            return PartialView("/Views/Post/_Post.cshtml", postUserViewModel);
         }
     }
 }

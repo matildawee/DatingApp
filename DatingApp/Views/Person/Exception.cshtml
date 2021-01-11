@@ -1,6 +1,18 @@
-﻿<div id="exceptionDiv">
-    <div id="exception">
-        <h2>@TempData["ProcessMessage"]</h2>
-        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Return to homepage</a>
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DatingApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div id="exceptionDiv">
+        <div id="exception">
+            <h2>@TempData["ProcessMessage"]</h2>
+            <a asp-area="" asp-controller="Home" asp-action="Index">Return to homepage</a>
+        </div>
     </div>
-</div>
+</body>
+</html>

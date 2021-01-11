@@ -22,22 +22,10 @@
             <p>
                 <i class="fas fa-search"></i>
                 <input type="text" id="search" name="SearchString" value="@ViewData["CurrentFilter"]" />
-                <button id="searchBtn" type="submit">Search</button>
+                <button id="searchBtn" class="btn btn-primary" type="submit">Search</button>
             </p>
         </div>
     </form>
-
-    //Submit search button when pressing enter key inside input field
-    <script>
-        $(document).ready(function () {
-            $("#search").keypress(function (event) {
-                if (event.which == 13) {
-                    event.preventDefault();
-                    $("#searchBtn").click();
-                }
-            });
-        });
-    </script>
 
     <center>
         @foreach (var item in Model)
