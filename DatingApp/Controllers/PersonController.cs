@@ -3,17 +3,13 @@ using DataLayer.Models;
 using DataLayer.Repositories;
 using DatingApp.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace DatingApp.Controllers
 {
@@ -34,23 +30,28 @@ namespace DatingApp.Controllers
 
         public IActionResult Profile(int id)
         {
-            Person user = personRepository.GetPersonById((int)id);
-            List<Post> posts = postRepository.GetAllPostsByPersonId((int)id);
-            PostUserViewModel postUserViewModel = CreatePostUserViewModel(posts, (int)id);
-            ProfileViewModel profileViewModel = new ProfileViewModel
+            if (id > 0)
             {
-                PersonId = user.PersonId,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Description = user.Description,
-                Picture = user.Picture,
-                Posts = postUserViewModel
-            };
-            ViewBag.PersonRelation = GetPersonRelation(id);
-            return View(profileViewModel);
+                Person user = personRepository.GetPersonById((int)id);
+                List<Post> posts = postRepository.GetAllPostsByPersonId((int)id);
+                PostUserViewModel postUserViewModel = CreatePostUserViewModel(posts, (int)id);
+                ProfileViewModel profileViewModel = new ProfileViewModel
+                {
+                    PersonId = user.PersonId,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Description = user.Description,
+                    Picture = user.Picture,
+                    Posts = postUserViewModel
+                };
+                ViewBag.PersonRelation = GetPersonRelation(id);
+                return View(profileViewModel);
+            }
+            //Om vi kommer hit är något fel och vi återgår till startsidan
+            return RedirectToAction("Index", "Home");
         }
 
-        public string GetPersonRelation(int id)
+        public string GetPersonRelation(int id) //Kollar vilken relation två användare har till varandra
         {
             int loggedInUser = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
             if (requestRepository.IsFriends(loggedInUser, id))
@@ -71,6 +72,7 @@ namespace DatingApp.Controllers
             }
         }
 
+        //Skapar vymodell - PostUserViewModel, som innehåller de inlägg som gjorts på en användares vägg.
         public PostUserViewModel CreatePostUserViewModel(List<Post> posts, int personId)
         {
             IEnumerable<PostViewModel> postsViewModel = posts.Select((p) => new PostViewModel()
@@ -89,6 +91,7 @@ namespace DatingApp.Controllers
             return postUserViewModel;
         }
 
+        //Hämtar den inloggade användarens profil, med tillhörande inlägg och vänlista.
         public IActionResult MyProfile()
         {
             string email = User.Identity.Name;
@@ -98,22 +101,28 @@ namespace DatingApp.Controllers
             List<FriendRequest> friends = requestRepository.GetFriendsByPersonId((int)id);
             PostUserViewModel postUserViewModel = CreatePostUserViewModel(posts, (int)id);
             FriendUserViewModel friendUserViewModel = CreateFriendUserViewModel(friends, (int)id);
-
-            ProfileViewModel profileViewModel = new ProfileViewModel
+            if (ModelState.IsValid)
             {
-                PersonId = user.PersonId,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Description = user.Description,
-                Picture = user.Picture,
-                Email = user.Email,
-                AccountHidden = user.AccountHidden,
-                Posts = postUserViewModel,
-                Friends = friendUserViewModel
-            };
-            return View(profileViewModel);
+                ProfileViewModel profileViewModel = new ProfileViewModel
+                {
+                    PersonId = user.PersonId,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Description = user.Description,
+                    Picture = user.Picture,
+                    Email = user.Email,
+                    AccountHidden = user.AccountHidden,
+                    Posts = postUserViewModel,
+                    Friends = friendUserViewModel
+                };
+
+                return View(profileViewModel);
+            }
+            //Om vi kommer hit är något fel och vi återgår till startsidan
+            return RedirectToAction("Index", "Home");
         }
 
+        //Skapar vymodell - FriendUserViewModel, som innehåller den inloggade användarens vänner.
         public FriendUserViewModel CreateFriendUserViewModel(List<FriendRequest> friends, int personId)
         {
             IEnumerable<FriendViewModel> friendsViewModel = friends.Select((p) => new FriendViewModel()
@@ -136,10 +145,20 @@ namespace DatingApp.Controllers
             List<FriendRequest> friends = requestRepository.GetFriendsByPersonId(currentUser);
             foreach (FriendRequest f in friends)
             {
+                //Hämtar den FriendRequest där SenderID och ReceiverID stämmer, och tar bort den. 
                 if (f.ReceiverId.Equals(currentUser) && f.SenderId.Equals(friendToRemove) || f.ReceiverId.Equals(friendToRemove) && f.SenderId.Equals(currentUser))
                 {
-                    requestRepository.DeleteFriendOrRequest(f);
-                    //return Json(new { Result = true });
+                    try
+                    {
+                        _context.Remove(f);
+                        _context.SaveChanges();
+                    }
+                    catch (Exception)
+                    {
+                        TempData["ProcessMessage"] = "Could not remove friend, try again later";
+                        return PartialView("Exception");
+                    }
+                    
                 }
             }
             return RedirectToAction("Profile", "Person", new { id = friendToRemove });
@@ -157,6 +176,7 @@ namespace DatingApp.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> UpdateProfile(ProfileViewModel profileModel)
         {
             int currentUser = personRepository.GetIdByUserIdentityEmail((string)User.Identity.Name);
@@ -173,26 +193,17 @@ namespace DatingApp.Controllers
                     _context.Update(personToUpdate);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception)
                 {
-                    if (!UserExists(personToUpdate.PersonId))
-                    {
-                        //error
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    TempData["ProcessMessage"] = "Could not update profile";
+                    return PartialView("Exception");
                 }
             }
+
             return RedirectToAction("MyProfile");
         }
 
-        private bool UserExists(int id)
-        {
-            return _context.Persons.Any(e => e.PersonId == id);
-        }
-
+        [ValidateAntiForgeryToken]
         public IActionResult UploadImage()
         {
             foreach (var file in Request.Form.Files)
@@ -206,9 +217,17 @@ namespace DatingApp.Controllers
 
                 ms.Close();
                 ms.Dispose();
-
-                _context.Update(personToUpdate);
-                _context.SaveChanges();
+                try
+                {
+                    _context.Update(personToUpdate);
+                    _context.SaveChanges();
+                }
+                catch(Exception)
+                {
+                    TempData["ProcessMessage"] = "Could not update profile picture, please try again";
+                    return PartialView("Exception");
+                }
+                
             }
             return RedirectToAction("MyProfile");
         }

@@ -1,8 +1,6 @@
 ﻿using DataLayer.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DataLayer.Repositories
 {
@@ -27,14 +25,12 @@ namespace DataLayer.Repositories
 
         public int GetIdByUserIdentityEmail(string email)
         {
-            int id = items.FirstOrDefault(p => p.Email.Equals(email)).PersonId;
-            return id;
+            return items.FirstOrDefault(p => p.Email.Equals(email)).PersonId;
         }
 
         public Person GetPersonById(int id)
         {
-            Person person = items.FirstOrDefault(p => p.PersonId == id);
-            return person;
+            return items.FirstOrDefault(p => p.PersonId == id);
         }
         public byte[] GetPictureById(int id)
         {

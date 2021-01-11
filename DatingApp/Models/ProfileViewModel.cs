@@ -14,14 +14,16 @@ namespace DatingApp.Models
     {
         public int PersonId { get; set; }
 
+        [Required]
         [DisallowNull]
-        [Required(ErrorMessage = "Enter first name with uppercase first letter")]
-        [RegularExpression(@"^[A-Z]+[a-zA-Z]*$")]
+        [Display(Name = "First name")]
+        [RegularExpression(@"^[a-öA-Ö]+$", ErrorMessage = "Enter first name with only letters (A-Ö)")]
         public string FirstName { get; set; }
 
+        [Required]
         [DisallowNull]
-        [Required(ErrorMessage = "Enter last name with uppercase first letter")]
-        [RegularExpression(@"^[A-Z]+[a-zA-Z]*$")]
+        [Display(Name = "Last name")]
+        [RegularExpression(@"^[a-öA-Ö]+$", ErrorMessage = "Enter first name with only letters (A-Ö)")]
         public string LastName { get; set; }
 
         [StringLength(300)]

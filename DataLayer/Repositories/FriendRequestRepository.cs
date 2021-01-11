@@ -1,8 +1,6 @@
 ﻿using DataLayer.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DataLayer.Repositories
 {
@@ -39,18 +37,6 @@ namespace DataLayer.Repositories
             return items.Where((r) => r.SenderId.Equals(id) && r.Accepted.Equals(false)).ToList();
         }
 
-        public void DeleteFriendOrRequest(FriendRequest request)
-        {
-            items.Remove(request);
-            SaveChanges();
-        }
-
-        public void AddRequest(FriendRequest request)
-        {
-            items.Add(request);
-            SaveChanges();
-        }
-
         public bool FriendRequestOutgoing(int currentUser, int id)
         {
             List<FriendRequest> requests = items.Where((r) => r.SenderId == currentUser && r.ReceiverId == id && r.Accepted.Equals(false)).ToList();
@@ -62,7 +48,6 @@ namespace DataLayer.Repositories
                 return false;
             }
         }
-
         public bool FriendRequestIncoming(int currentUser, int id)
         {
             List<FriendRequest> requests = items.Where((r) => r.ReceiverId == currentUser && r.SenderId == id && r.Accepted.Equals(false)).ToList();
@@ -75,12 +60,5 @@ namespace DataLayer.Repositories
                 return false;
             }
         }
-
-        //public void AcceptRequest(FriendRequest friend)
-        //{
-        //   // items.Where((r) => r == friend).ToList().ForEach(f => f.Accepted = true);
-        //    friend.Accepted = true;
-        //    SaveChanges();
-        //}
     }
 }

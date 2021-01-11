@@ -14,13 +14,13 @@ namespace DataLayer.Models
         public string Email { get; set; }
 
         [DisallowNull]
-        [Required(ErrorMessage = "Enter first name with uppercase first letter")]
-        [RegularExpression(@"^[A-Z]+[a-zA-Z]*$")] //Anger att första bokstaven måste vara stor bokstav, och efterföljande tecken måste vara bokstäver
+        [Required]
+        [RegularExpression(@"^[a-öA-Ö]+$", ErrorMessage = "Enter first name with only letters (A-Ö)")] //Anger att första bokstaven måste vara stor bokstav, och efterföljande tecken måste vara bokstäver
         public string FirstName { get; set; }
 
         [DisallowNull]
-        [Required(ErrorMessage = "Enter last name with uppercase first letter")]
-        [RegularExpression(@"^[A-Z]+[a-zA-Z]*$")] //Anger att första bokstaven måste vara stor bokstav, och efterföljande tecken måste vara bokstäver
+        [Required]
+        [RegularExpression(@"^[a-öA-Ö]+$", ErrorMessage = "Enter first name with only letters (A-Ö)")] //Anger att första bokstaven måste vara stor bokstav, och efterföljande tecken måste vara bokstäver
         public string LastName { get; set; }
 
         [StringLength(300)]

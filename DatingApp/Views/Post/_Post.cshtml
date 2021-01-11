@@ -8,6 +8,7 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
+
     <h2>Posts</h2>
     <div id="PostWall">
         <div class="card newpost mb-3" id="CreatePostCard">
@@ -33,9 +34,6 @@
                             <img class="mr-1" src="@Url.Action("LoadPicture", "Person", new { id = item.Author.PersonId })" height="32" width="32" />
                             <span class="badge badge-light">@item.Author.FirstName @item.Author.LastName</span>
                         </a>
-                        @*<div class="media-body">
-                            <button type="button" class="btn close" data-toggle="modal" data-target="@HashTargetId">&times;</button>
-                        </div>*@
                     </div>
                 </div>
                 <div class="card-body">
@@ -49,9 +47,7 @@
                 </footer>
             </div>
         }
-
     </div>
-
 }
 
 else
