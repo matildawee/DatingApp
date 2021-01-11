@@ -109,7 +109,7 @@ namespace DatingApp.Controllers
         public ActionResult SendRequest(int receiverId)
         {
             int senderId = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
-            FriendRequest friendRequest = new FriendRequest
+            FriendRequest friendRequest = new FriendRequest //Skapar ny vänförfrågan
             {
                 Sender = personRepository.GetPersonById(senderId),
                 SenderId = senderId,

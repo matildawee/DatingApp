@@ -1,6 +1,9 @@
 ﻿
 $("#PostWall").on("click", "#SubmitPost", AddPost);
 
+//Hämtar värdet användaren skriver in samt vilken profil användaren kollar på.
+//Skickar med dessa värden till metoden AddPost (i PostApiController) där en ny post läggs till.
+//Uppdaterar sedan sidan för att kunna se den nya posten. 
     function AddPost() {
         if ($("#PostText").val() != "" && $("#PostText").val().length <= 300) {
             var post;
@@ -13,8 +16,10 @@ $("#PostWall").on("click", "#SubmitPost", AddPost);
                 url: "/api/PostApi/AddPost",
                 data: JSON.stringify(post),
                 contentType: "application/json;charset=UTF-8",
-                success: function (data) {
-                    location.reload(true);
+                //success: function (data) {
+                //    location.reload(true);
+                success: () => {
+                    UpdatePostwall();
                 },
                 error: () => {
                     alert("Error: Failure to add post");
@@ -23,13 +28,30 @@ $("#PostWall").on("click", "#SubmitPost", AddPost);
         } else {
             alert("Your post needs to consist of between 1 and 300 characters.")
         }
-    }
+}
 
-    $("#PostWall").on("keyup", "#PostText", AdjustCounter);
+//Uppdaterar partial view _Post
+function UpdatePostwall() {
+    var id = $("#PersonId").val();
 
-    function AdjustCounter() {
-        var number = $("#PostText").val().length;
-        if (number <= 0) {
+    var serviceUrl = "/Person/UpdatePostWall/" + id;
+    var request = $.post(serviceUrl);
+    request.done(function (data) {
+        $("#PostWall").html(data);
+    }).fail(() => {
+        console.log("Error: Failure to update post wall");
+    });
+}
+
+
+$("#PostWall").on("keyup", "#PostText", Counter);
+
+//Räknar hur många tecken som skrivits när användaren skriver en ny post. 
+//Om antalet tecken är fler än 250 varnas användaren genom att rutan som visar antelet tecken blir gul.
+//Om antalet tecken är fler än 280 varnas användaren genom att rutan som visar antelet tecken blir röd.
+    function Counter() {
+        var numberOfCharacters = $("#PostText").val().length;
+        if (numberOfCharacters <= 0) { 
             if ($("#CreatePostCard").hasClass("border-success")) {
                 $("#CreatePostCard").removeClass("border-success");
             }
@@ -37,7 +59,7 @@ $("#PostWall").on("click", "#SubmitPost", AddPost);
                 $("#CreatePostCard").addClass("border-danger");
             }
         }
-        else if (number < 250) {
+        else if (numberOfCharacters < 250) {
             if ($("#TextAreaWordCounter").hasClass("badge-danger")) {
                 $("#TextAreaWordCounter").removeClass("badge-danger");
             }
@@ -54,7 +76,7 @@ $("#PostWall").on("click", "#SubmitPost", AddPost);
                 $("#CreatePostCard").addClass("border-success");
             }
         }
-        if (number >= 250) {
+        if (numberOfCharacters >= 250) {
             if ($("#TextAreaWordCounter").hasClass("badge-danger")) {
                 $("#TextAreaWordCounter").removeClass("badge-danger");
             }
@@ -71,7 +93,7 @@ $("#PostWall").on("click", "#SubmitPost", AddPost);
                 $("#CreatePostCard").addClass("border-success");
             }
         }
-        if (number > 280) {
+        if (numberOfCharacters > 280) {
             if ($("#TextAreaWordCounter").hasClass("badge-warning")) {
                 $("#TextAreaWordCounter").removeClass("badge-warning");
             }
@@ -88,5 +110,5 @@ $("#PostWall").on("click", "#SubmitPost", AddPost);
                 $("#CreatePostCard").addClass("border-danger");
             }
         }
-        $("#TextAreaWordCounter").text(300 - number);
+        $("#TextAreaWordCounter").text(300 - numberOfCharacters);
     }

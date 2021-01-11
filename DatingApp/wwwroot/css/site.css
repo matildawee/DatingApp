@@ -182,11 +182,11 @@ div.exempel {
         padding-left: 30px;
     }
 
-/*Style sad-face icon*/
+/*Style sad-face icon on _NoResult*/
 .fa-frown {
     position: absolute;
     top: 32.5%;
-    left: 27%;
+    left: 30%;
 }
 
 /*Add padding, border and background to the pop up div*/

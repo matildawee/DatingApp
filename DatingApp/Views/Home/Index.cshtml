@@ -27,18 +27,6 @@
         </div>
     </form>
 
-    //Submit search button when pressing enter key inside input field
-    <script>
-        $(document).ready(function () {
-            $("#search").keypress(function (event) {
-                if (event.which == 13) {
-                    event.preventDefault();
-                    $("#searchBtn").click();
-                }
-            });
-        });
-    </script>
-
     <center>
         @foreach (var item in Model)
         {

@@ -74,3 +74,16 @@ function SetNumberOfRequests() {
         }
     });
 }
+
+
+// -- Sök-funktionen --
+
+//Submita sökknappen när användaren trycker på enter-knappen inuti input-fältet. 
+    $(document).ready(function () {
+        $("#search").keypress(function (event) {
+            if (event.which == 13) {
+                event.preventDefault();
+                $("#searchBtn").click();
+            }
+        });
+        });
