@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
@@ -27,7 +26,6 @@ namespace DatingApp.Areas.Identity.Pages.Account
         private readonly DatingAppContext _context;
         private readonly IWebHostEnvironment _hostEnvironment;
 
-
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
@@ -46,6 +44,7 @@ namespace DatingApp.Areas.Identity.Pages.Account
 
         [BindProperty]
         public InputModel Input { get; set; }
+        [BindProperty]
         public InputModelDetails Input2 { get; set; }
         public string ReturnUrl { get; set; }
 
@@ -99,18 +98,19 @@ namespace DatingApp.Areas.Identity.Pages.Account
 
                 byte[] imageData = null;
                 string wwwrootPath = _hostEnvironment.WebRootPath;
-                string path = wwwrootPath + "/img/default_profile_picture.jpg";
+                string path = wwwrootPath + "/img/default_profile_picture.jpg"; //Hämtar path för default-bild
 
                 FileStream file = new FileStream(path, FileMode.Open);
 
                 using (var binary = new BinaryReader(file))
                 {
-                    imageData = binary.ReadBytes((int)file.Length);
+                    imageData = binary.ReadBytes((int)file.Length); 
                 }
                 if (result.Succeeded)
                 {
-                    string firstname = Request.Form["firstName"];
-                    string lastname = Request.Form["lastName"];
+                    var firstname = Input2.FirstName;
+                    var lastname = Input2.LastName;
+
                     var person = new Person
                     {
                         Email = Input.Email,

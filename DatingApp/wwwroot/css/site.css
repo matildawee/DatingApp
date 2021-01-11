@@ -9,13 +9,14 @@ a.navbar-brand {
 a {
     color: #0366d6;
 }
-#exceptionDiv{
-    width: 30%;
-    margin: 35%;
+#exceptionDiv {
+    width: 100%;
+    margin: 10% 0;
     border-color: dimgrey;
-}
-#exception {
-    color: red;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+    color: firebrick;
 }
 #noRequest {
     color: red;
@@ -188,9 +189,17 @@ div.exempel {
     left: 27%;
 }
 
-/*Add padding to the pop up div*/
+/*Add padding, border and background to the pop up div*/
 #popupRequests {
     padding: 10px;
+    border-color: #555;
+    border-style: solid;
+    background-color: #f2f2f2;
+}
+
+/*Add margin between friend requests*/
+#requestLink {
+    margin-bottom: 1em;
 }
 
 /*Styling and positioning the friend requests button*/

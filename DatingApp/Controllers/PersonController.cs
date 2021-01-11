@@ -51,7 +51,8 @@ namespace DatingApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public string GetPersonRelation(int id) //Kollar vilken relation två användare har till varandra
+        //Kollar vilken relation två användare har till varandra för att uppdatera relationsknappen i Profile-vyn
+        public string GetPersonRelation(int id)  
         {
             int loggedInUser = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
             if (requestRepository.IsFriends(loggedInUser, id))
@@ -115,7 +116,6 @@ namespace DatingApp.Controllers
                     Posts = postUserViewModel,
                     Friends = friendUserViewModel
                 };
-
                 return View(profileViewModel);
             }
             //Om vi kommer hit är något fel och vi återgår till startsidan

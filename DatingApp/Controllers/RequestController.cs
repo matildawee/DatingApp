@@ -23,6 +23,7 @@ namespace DatingApp.Controllers
             requestRepository = new FriendRequestRepository(context);
         }
 
+        //Hämtar alla vänförfrågningar och returnerar en av två partialviews beroende på om det finns några vänförfrågningar. 
         [AllowAnonymous]
         [HttpGet]
         public PartialViewResult GetFriendRequests()
@@ -46,6 +47,7 @@ namespace DatingApp.Controllers
             }
         }
 
+        //Hämtar antalet vänförfrågningar och returnerar resultatet som JSON
         [HttpPost]
         public ActionResult GetNumberOfRequests()
         {
@@ -60,9 +62,9 @@ namespace DatingApp.Controllers
 
             List<FriendRequest> requests = requestRepository.GetAllRequestsSentToUser(receiverId);
             
-            foreach(FriendRequest fr in requests)
+            foreach(FriendRequest fr in requests) //Loopar genom alla vänförfrågningar användaren har fått
             {
-                if(fr.SenderId == senderId && fr.ReceiverId == receiverId)
+                if(fr.SenderId == senderId && fr.ReceiverId == receiverId) //Kontrollerar att sändare och mottagare stämmer
                 {
                     fr.Accepted = true;
                     try
@@ -128,12 +130,14 @@ namespace DatingApp.Controllers
             return RedirectToAction("Profile", "Person", new { id = receiverId });
         }
 
+        //Avbryter och tar bort en förfrågan användaren har skickat
         public ActionResult CancelRequest(int receiverId)
         {
             int senderId = personRepository.GetIdByUserIdentityEmail(User.Identity.Name);
             if (requestRepository.FriendRequestOutgoing(senderId, receiverId))
             {
-                List<FriendRequest> requests = requestRepository.GetAllRequestsSentByUser(senderId);
+                //Hämtar alla förfrågningar användaren har skickat
+                List<FriendRequest> requests = requestRepository.GetAllRequestsSentByUser(senderId); 
                 foreach (FriendRequest r in requests)
                 {
                     if (r.ReceiverId == receiverId && r.SenderId == senderId)
