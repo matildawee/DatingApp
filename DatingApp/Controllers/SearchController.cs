@@ -21,9 +21,10 @@ namespace DatingApp.Controllers
         //Hämtar matchande profiler för sökning
         public ActionResult Result(string searchString)
         {
+            string email = User.Identity.Name;
             ViewData["CurrentFilter"] = searchString; //Användarens inmatning
             List<Person> searchResult = new List<Person>();
-            searchResult = personRepository.SearchResultByName(searchString);
+            searchResult = personRepository.SearchResultByName(searchString, email);
             if (searchResult.Count > 0)
             {
                 return View(searchResult);

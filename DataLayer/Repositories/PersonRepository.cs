@@ -18,9 +18,10 @@ namespace DataLayer.Repositories
             return items.Where((p) => !p.Email.Equals(mail) && p.AccountHidden.Equals(false)).ToList();
         }
 
-        public List<Person> SearchResultByName(string name)
+        public List<Person> SearchResultByName(string name, string email)
         {
-            return items.Where((p) => p.FirstName.Contains(name) && p.AccountHidden.Equals(false) || p.LastName.Contains(name) && p.AccountHidden.Equals(false)).ToList();
+            return items.Where((p) => p.FirstName.Contains(name) && p.AccountHidden.Equals(false) && !p.Email.Equals(email)
+            || p.LastName.Contains(name) && p.AccountHidden.Equals(false) && !p.Email.Equals(email)).ToList();
         }
 
         public int GetIdByUserIdentityEmail(string email)
